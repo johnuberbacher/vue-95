@@ -1,7 +1,11 @@
 <template>
   <div class="hello">
-    <div class="desktop" @click="resetDesktopContextMenu()" @contextmenu.prevent="desktopContextMenu">
-      <div class="programs">
+    <div
+      class="desktop"
+      @contextmenu.prevent="desktopContextMenu"
+    >
+      <div class="programs" ref="boundary">
+        <Window :boundary="this.$refs.boundary"/>
         <Program />
         <Program />
         <Program />
@@ -11,18 +15,20 @@
         <Program />
         <Program />
       </div>
-      <DesktopContextMenu :active="this.desktopContextMenuActive" :position="this.desktopContextMenuPosition"/>
+      <DesktopContextMenu
+        :active="this.desktopContextMenuActive"
+        :position="this.desktopContextMenuPosition"
+        :hideContextMenu="resetDesktopContextMenu"
+      />
     </div>
-    <div class="taskbar">
-      <div class="start">Start</div>
-      <div class="clock">Start</div>
-    </div>
+    <Taskbar />
   </div>
 </template>
-
 <script>
 import Program from "./desktop/programs/Program.vue";
 import DesktopContextMenu from "./desktop/DesktopContextMenu.vue";
+import Taskbar from "./taskbar/Taskbar.vue";
+import Window from "./windows/Window.vue";
 export default {
   name: "HelloWorld",
   props: {
@@ -31,14 +37,19 @@ export default {
   data() {
     return {
       desktopContextMenuActive: false,
-      desktopContextMenuPosition: [0,0],
+      desktopContextMenuPosition: [0, 0],
     };
   },
   components: {
     Program,
     DesktopContextMenu,
+    Taskbar,
+    Window,
   },
   methods: {
+    unfocused : function() {
+      alert('good bye');
+    },
     resetDesktopContextMenu() {
       this.desktopContextMenuActive = false;
     },
@@ -51,18 +62,57 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 $cursor-arrow: url("../assets/cursor/arrow.png"), default;
 $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
+$highlight: #000080;
+
+@font-face {
+  font-family: "W95A";
+  src: url("../assets/font/W95A.woff2") format("woff2"),
+    url("../assets/font/W95A.woff") format("woff"),
+    url("../assets/font/W95A.otf") format("otf");
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+* {
+  font-family: "W95A";
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+}
 
 .hello {
   width: 100%;
   max-width: 640px;
   height: 480px;
-  font-size: 8px;
+  font-weight: 300;
+  font-size: 12px;
+  overflow: hidden;
 }
+
+.programs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 992px) {
+    flex-direction: row;
+  }
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  .child-class {
+    width: auto;
+    @media (min-width: 992px) {
+      width: 100%;
+    }
+  }
+}
+
+/********************************** */
+
 .programs {
   height: 100%;
   display: flex;
@@ -71,6 +121,31 @@ $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
   justify-content: flex-start;
   align-items: flex-start;
 }
+@media (min-width: 992px) {
+  .programs {
+    flex-direction: row;
+  }
+}
+.child-class {
+  width: auto;
+}
+@media (min-width: 992px) {
+  .child-class {
+    width: 100%;
+  }
+}
+
+.programs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  @media (min-width: 992px) {
+    width: 100%;
+  }
+}
 .desktop {
   width: 100%;
   max-width: 640px;
@@ -78,42 +153,5 @@ $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
   padding: 0;
   position: relative;
   background-color: #008080;
-}
-.taskbar {
-  padding: 2px 3px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 32px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
-    rgb(254, 254, 254);
-  box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
-    rgb(132 133 132) 0px 0px 0px 1px inset;
-  background: rgb(198, 198, 198);
-}
-.start {
-  margin-right: 2px;
-  padding: 2px 4px;
-  background-color: rgba(191, 193, 192, 1);
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
-    rgb(254, 254, 254);
-  box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
-    rgb(132 133 132) 0px 0px 0px 1px inset;
-}
-.clock {
-  margin-right: 2px;
-  padding: 2px 4px;
-  background-color: rgba(191, 193, 192, 1);
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
-    rgb(254, 254, 254);
-  box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
-    rgb(132 133 132) 0px 0px 0px 1px inset;
 }
 </style>
