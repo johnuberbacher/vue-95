@@ -5,7 +5,6 @@
       top: this.position[1] + 'px',
     }"
     v-if="this.showContextMenu"
-    v-click-outside="hideContextMenu"
     class="desktopContextMenu"
   >
     <div class="link">Test</div>
@@ -27,12 +26,6 @@ export default {
       showContextMenu: this.active,
     };
   },
-   methods: {
-       hideContextMenu() {
-        console.log('here');
-        this.showContextMenu = false;
-       }
-   }
 };
 </script>
 <style lang="scss" scoped>

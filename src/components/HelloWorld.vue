@@ -47,16 +47,13 @@ export default {
     Window,
   },
   methods: {
-    unfocused : function() {
-      alert('good bye');
-    },
     resetDesktopContextMenu() {
       this.desktopContextMenuActive = false;
     },
     desktopContextMenu: function (e) {
       this.desktopContextMenuPosition[0] = e.pageX;
       this.desktopContextMenuPosition[1] = e.pageY;
-      this.desktopContextMenuActive = !this.desktopContextMenuActive;
+      this.desktopContextMenuActive = true;
       e.preventDefault();
     },
   },

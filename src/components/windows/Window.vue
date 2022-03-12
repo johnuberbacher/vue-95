@@ -100,7 +100,6 @@ export default {
     handleMouseMove(e) {
         if (this.isDragging) {
             const position = this.findPositionInsideBound(e);
-            
             this.dragItemCoords = {left: position.x, top: position.y };
         }
     },
@@ -141,6 +140,7 @@ $highlight: #000080;
     right: 0 !important;
     bottom: 0 !important;
     top: 0 !important;
+    z-index: 2;
     resize: none !important;
     width: auto !important;
     height: auto !important;

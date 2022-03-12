@@ -1,6 +1,6 @@
 <template>
   <div class="start-menu-wrapper">
-    <div class="start-menu" v-if="activeStartMenu">
+    <div class="start-menu" v-if="activeStartMenu" ref="target">
       <div class="link">Shut Down...</div>
       <div class="link">Shut Down...</div>
       <div class="link">Shut Down...</div>
@@ -18,19 +18,29 @@
   </div>
 </template>
 <script>
+import { ref } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+
 export default {
   name: "StartMenu",
-  props: {
-    showStartMenu: Boolean,
-  },
-  data() {
+  data: function () {
     return {
-      activeStartMenu:  this.showStartMenu,
+      activeStartMenu: false,
     };
+  },
+  setup() {
+    const target = ref(null)
+
+    onClickOutside(target, () =>  console.log('here'))
+
+    return (this.activeStartMenu)
   },
   methods: {
     toggleStartMenu() {
       this.activeStartMenu = !this.activeStartMenu;
+    },
+    closeStartMenu() {
+      this.activeStartMenu = false;
     },
   },
 };
