@@ -2,10 +2,11 @@
   <div class="hello">
     <div
       class="desktop"
+      v-on:click="resetDesktopContextMenu"
       @contextmenu.prevent="desktopContextMenu"
     >
       <div class="programs" ref="boundary">
-        <Window :boundary="this.$refs.boundary"/>
+        <Window :boundary="this.$refs.boundary" />
         <Program />
         <Program />
         <Program />
@@ -16,12 +17,11 @@
         <Program />
       </div>
       <DesktopContextMenu
-        :active="this.desktopContextMenuActive"
+        v-if="this.desktopContextMenuActive"
         :position="this.desktopContextMenuPosition"
-        :hideContextMenu="resetDesktopContextMenu"
       />
     </div>
-    <Taskbar />
+    <Taskbar :desktopStartMenuActive="this.desktopStartMenuActive" />
   </div>
 </template>
 <script>
@@ -37,7 +37,9 @@ export default {
   data() {
     return {
       desktopContextMenuActive: false,
+      desktopStartMenuActive: false,
       desktopContextMenuPosition: [0, 0],
+      windowsOpen: {},
     };
   },
   components: {
@@ -49,12 +51,13 @@ export default {
   methods: {
     resetDesktopContextMenu() {
       this.desktopContextMenuActive = false;
+      this.desktopStartMenuActive = false;
     },
-    desktopContextMenu: function (e) {
+    desktopContextMenu(e) {
+      e.preventDefault();
       this.desktopContextMenuPosition[0] = e.pageX;
       this.desktopContextMenuPosition[1] = e.pageY;
       this.desktopContextMenuActive = true;
-      e.preventDefault();
     },
   },
 };
@@ -71,7 +74,9 @@ $highlight: #000080;
     url("../assets/font/W95A.otf") format("otf");
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
 }

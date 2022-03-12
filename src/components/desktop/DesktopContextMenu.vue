@@ -4,7 +4,6 @@
       left: this.position[0] + 'px',
       top: this.position[1] + 'px',
     }"
-    v-if="this.showContextMenu"
     class="desktopContextMenu"
   >
     <div class="link">Test</div>
@@ -18,7 +17,6 @@
 export default {
   name: "DesktopContextMenu",
   props: {
-    active: Boolean,
     position: Array,
   },
   data() {

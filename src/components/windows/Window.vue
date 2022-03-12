@@ -1,48 +1,49 @@
 <template>
- <div>
+  <div>
+    <div
+      class="window"
+      ref="draggable"
+      :class="{ dragging: isDragging, maximize: maximizeWindow }"
+      :style="windowPosition"
+    >
       <div
-    class="window"
-    ref="draggable"
-    :class="{ dragging: isDragging, maximize: maximizeWindow }"
-    :style="windowPosition"
-  >
-    <div class="menu-bar"
-    
-    @mousedown="handleMouseDown"
-    @mousemove="handleMouseMove"
-    @mouseup="handleMouseUp"
-     @dblclick.stop="doubleClick($event)">
-      <div class="title">
-        <span
-          class="icon"
-          :style="{
-            backgroundImage:
-              'url(' + require('@/assets/icon/my-computer.png') + ')',
-          }"
-        ></span
-        ><span>My Computer</span>
-      </div>
-      <div class="actions">
-        <div>
-          <img :src="require('@/assets/icon/minimize.png')" />
+        class="menu-bar"
+        @mousedown="handleMouseDown"
+        @mousemove="handleMouseMove"
+        @mouseup="handleMouseUp"
+        @dblclick.stop="doubleClick($event)"
+      >
+        <div class="title">
+          <span
+            class="icon"
+            :style="{
+              backgroundImage:
+                'url(' + require('@/assets/icon/my-computer.png') + ')',
+            }"
+          ></span
+          ><span>My Computer</span>
         </div>
-        <div v-on:click="maximize()">
-          <img :src="require('@/assets/icon/maximize.png')" />
-        </div>
-        <div>
-          <img :src="require('@/assets/icon/close.png')" />
+        <div class="actions">
+          <div>
+            <img :src="require('@/assets/icon/minimize.png')" />
+          </div>
+          <div v-on:click="maximize()">
+            <img :src="require('@/assets/icon/maximize.png')" />
+          </div>
+          <div>
+            <img :src="require('@/assets/icon/close.png')" />
+          </div>
         </div>
       </div>
+      <WindowBody />
     </div>
-    <WindowBody />
-  </div>
   </div>
 </template>
 <script>
 import WindowBody from "./FileExplorer.vue";
 const clamp = (num, lower = 0, upper) => {
-	return num < lower ? lower : num > upper ? upper : num;
-}; 
+  return num < lower ? lower : num > upper ? upper : num;
+};
 export default {
   name: "Window",
   components: {
@@ -64,47 +65,48 @@ export default {
     minimize: Boolean,
     boundary: Object,
   },
-	computed: {
-		windowPosition() {
-			console.log(this.dragItemCoords.top);
-			console.log(this.dragItemCoords.left)
-			return {
-				top: this.dragItemCoords.top + 'px',
-				left: this.dragItemCoords.left + 'px'
-			};
-		},
-	},
+  computed: {
+    windowPosition() {
+      console.log(this.dragItemCoords.top);
+      console.log(this.dragItemCoords.left);
+      return {
+        top: this.dragItemCoords.top + "px",
+        left: this.dragItemCoords.left + "px",
+      };
+    },
+  },
   methods: {
-    clampInsideBoundary(x, y, e ) {
-        const boundaryPos = this.boundary.getBoundingClientRect();
-        const maxWidth = boundaryPos.width - e.target.clientWidth;
-        const maxHeight = boundaryPos.height - e.target.clientHeight;
+    clampInsideBoundary(x, y, e) {
+      const boundaryPos = this.boundary.getBoundingClientRect();
+      const maxWidth = boundaryPos.width - e.target.clientWidth;
+      const maxHeight = boundaryPos.height - e.target.clientHeight;
 
-        return {
-            x: clamp(x - boundaryPos.x, 0, maxWidth), 
-            y: clamp(y - boundaryPos.y, 0, maxHeight)
-        };
+      return {
+        x: clamp(x - boundaryPos.x, 0, maxWidth),
+        y: clamp(y - boundaryPos.y, 0, maxHeight),
+      };
     },
     findPositionInsideBound(e) {
-        const x = e.clientX - (e.target.clientWidth/2);
-        const y = e.clientY - (e.target.clientHeight/2); 
-        
-        return this.clampInsideBoundary(x, y, e);
+      const x = e.clientX - e.target.clientWidth / 2;
+      const y = e.clientY - e.target.clientHeight / 2;
+
+      return this.clampInsideBoundary(x, y, e);
     },
     handleMouseDown(e) {
-        if (e.target === e.target) {
-            this.isDragging = true;			
-            console.log('clicked')	
-        }
+      if (e.target === e.target) {
+        this.isDragging = true;
+        console.log("clicked");
+      }
     },
     handleMouseMove(e) {
-        if (this.isDragging) {
-            const position = this.findPositionInsideBound(e);
-            this.dragItemCoords = {left: position.x, top: position.y };
-        }
+      if (this.isDragging) {
+        const position = this.findPositionInsideBound(e);
+
+        this.dragItemCoords = { left: position.x, top: position.y };
+      }
     },
     handleMouseUp() {
-        this.isDragging = false;
+      this.isDragging = false;
     },
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
