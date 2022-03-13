@@ -29,6 +29,7 @@ $highlight: #000080;
   justify-content: flex-start;
   height: 32px;
   padding: 0px 6px;
+  &:hover,
   &:active {
     background-color: $highlight;
     color: white;

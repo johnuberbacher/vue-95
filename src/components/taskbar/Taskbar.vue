@@ -154,7 +154,6 @@ $highlight: #000080;
         align-items: flex-start;
         justify-content: flex-start;
         position: absolute;
-        z-index: 3;
         bottom: calc(100% + 3px);
         left: -4px;
         width: 164px;
