@@ -3,15 +3,19 @@
     <span
       class="icon"
       :style="{
-        backgroundImage:
-          'url(' + require('@/assets/icon/my-computer.png') + ')',
+        backgroundImage: 'url(' + require('@/assets/icon/' + icon + '.png') + ')',
       }"
     ></span>
-    <span>My Computer</span></div>
+    <span>{{title}}</span>
+  </div>
 </template>
 <script>
 export default {
-  name: "Taskbar",
+  name: "TaskbarProgram",
+  props: {
+    title: String,
+    icon: String,
+  },
 };
 </script>
 <style lang="scss" scoped>

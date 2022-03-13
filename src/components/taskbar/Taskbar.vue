@@ -4,12 +4,12 @@
       <div class="start-menu-wrapper">
         <div
           class="start-menu"
-          v-if="this.activeStartMenu"
+          v-show="this.activeStartMenu"
+          v-click-outside="onClickOutside"
         >
-          <div class="link">Shut Down...</div>
-          <div class="link">Shut Down...</div>
-          <div class="link">Shut Down...</div>
-          <div class="link">Shut Down...</div>
+          <StartMenuProgram :title="'My Computer'" :icon="'MyComputer'" />
+          <StartMenuProgram :title="'My Documents'" :icon="'Documents'" />
+          <StartMenuProgram :title="'Notepad'" :icon="'NotePad'" />
         </div>
         <div class="start" v-on:click="toggleStartMenu">
           <div
@@ -23,31 +23,43 @@
         </div>
       </div>
       <div class="divider"></div>
-      <TaskbarProgram />
+      <TaskbarProgram
+        v-for="(program, index) in programsOpen"
+        v-bind:key="index"
+        :title="program[0]"
+        :icon="program[1]"
+        @openProgram="openProgram"
+      />
     </div>
-    <Clock/>
+    <Clock />
   </div>
 </template>
 <script>
 import TaskbarProgram from "./TaskbarProgram.vue";
+import StartMenuProgram from "./StartMenuProgram.vue";
 import Clock from "./Clock.vue";
 import vClickOutside from "v-click-outside";
 export default {
   name: "Taskbar",
   data: function () {
     return {
-      activeStartMenu: this.desktopStartMenuActive,
+      activeStartMenu: false,
     };
   },
+  directives: {
+    clickOutside: vClickOutside.directive,
+  },
   props: {
+    programsOpen: Object,
     desktopStartMenuActive: Boolean,
   },
   components: {
     TaskbarProgram,
+    StartMenuProgram,
     Clock,
   },
-  directives: {
-    clickOutside: vClickOutside.directive,
+  mounted() {
+    this.activeStartMenu = this.desktopStartMenuActive;
   },
   methods: {
     onClickOutside(event) {
@@ -93,6 +105,7 @@ $highlight: #000080;
       -moz-user-select: none;
       -webkit-user-select: none;
       .start {
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -128,8 +141,8 @@ $highlight: #000080;
         z-index: 3;
         bottom: calc(100% + 3px);
         left: -4px;
-        width: 200px;
-        height: 300px;
+        width: 164px;
+        height: 240px;
         background-color: rgba(191, 193, 192, 1);
         border-style: solid;
         border-width: 1px;
@@ -138,18 +151,6 @@ $highlight: #000080;
           rgb(254, 254, 254);
         box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
           rgb(132 133 132) 0px 0px 0px 1px inset;
-        .link {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: flex-start;
-          height: 32px;
-          padding: 0px 6px;
-          &:active {
-            background-color: $highlight;
-            color: white;
-          }
-        }
       }
     }
   }

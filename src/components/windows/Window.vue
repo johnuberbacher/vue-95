@@ -18,10 +18,10 @@
             class="icon"
             :style="{
               backgroundImage:
-                'url(' + require('@/assets/icon/my-computer.png') + ')',
+                'url(' + require('@/assets/icon/' + icon + '.png') + ')',
             }"
           ></span
-          ><span>My Computer</span>
+          ><span>{{title}}</span>
         </div>
         <div class="actions">
           <div>
@@ -30,7 +30,7 @@
           <div v-on:click="maximize()">
             <img :src="require('@/assets/icon/maximize.png')" />
           </div>
-          <div>
+          <div v-on:click="closeProgram">
             <img :src="require('@/assets/icon/close.png')" />
           </div>
         </div>
@@ -61,7 +61,7 @@ export default {
   },
   props: {
     title: String,
-    open: Boolean,
+    icon: String,
     minimize: Boolean,
     boundary: Object,
   },
@@ -111,6 +111,9 @@ export default {
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
       event.preventDefault();
+    },
+    closeProgram() {
+      this.$emit("closeProgram", this.title, this.icon);
     },
     maximize() {
       console.log("clicked");

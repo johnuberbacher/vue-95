@@ -6,22 +6,27 @@
       @contextmenu.prevent="desktopContextMenu"
     >
       <div class="programs" ref="boundary">
-        <Window :boundary="this.$refs.boundary" />
-        <Program />
-        <Program />
-        <Program />
-        <Program />
-        <Program />
-        <Program />
-        <Program />
-        <Program />
+        <Window
+          v-bind:key="index"
+          v-for="(program, index) in programsOpen"
+          :title="program[0]"
+          :icon="program[1]"
+          :boundary="this.$refs.boundary"
+        />
+        <Program
+          v-for="(program, index) in programs"
+          v-bind:key="index"
+          :title="program[0]"
+          :icon="program[1]"
+          @openProgram="openProgram"
+        />
       </div>
       <DesktopContextMenu
         v-if="this.desktopContextMenuActive"
         :position="this.desktopContextMenuPosition"
       />
     </div>
-    <Taskbar :desktopStartMenuActive="this.desktopStartMenuActive" />
+    <Taskbar :programsOpen="programsOpen" :desktopStartMenuActive="this.desktopStartMenuActive" />
   </div>
 </template>
 <script>
@@ -39,7 +44,13 @@ export default {
       desktopContextMenuActive: false,
       desktopStartMenuActive: false,
       desktopContextMenuPosition: [0, 0],
-      windowsOpen: {},
+      programs: [
+        ["My Computer", "MyComputer", true],
+        ["Notepad", "NotePad", true],
+        ["Folder", "Folder", true],
+      ],
+      programsOpen: [
+      ],
     };
   },
   components: {
@@ -49,6 +60,13 @@ export default {
     Window,
   },
   methods: {
+    openProgram(programTitle, programIcon) {
+      this.programsOpen.push(
+        [programTitle, programIcon],
+      )
+      console.log([programTitle, programIcon])
+      console.log('programsOpen:' + this.programsOpen)
+    },
     resetDesktopContextMenu() {
       this.desktopContextMenuActive = false;
       this.desktopStartMenuActive = false;

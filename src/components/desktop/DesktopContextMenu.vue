@@ -4,6 +4,7 @@
       left: this.position[0] + 'px',
       top: this.position[1] + 'px',
     }"
+    
     class="desktopContextMenu"
   >
     <div class="link">Test</div>
@@ -24,6 +25,8 @@ export default {
       showContextMenu: this.active,
     };
   },
+  methods: {
+  }
 };
 </script>
 <style lang="scss" scoped>

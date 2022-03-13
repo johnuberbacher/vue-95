@@ -1,28 +1,18 @@
 <template>
-  <div class="program" @dblclick.stop="openProgram">
+  <div class="program">
     <span
       class="icon"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icon/' + icon + '.png') + ')',
+          'url(' + require('@/assets/icon/my-computer.png') + ')',
       }"
     ></span>
-    <span class="title">{{ title }}</span>
+    <span class="title">My Computer</span>
   </div>
 </template>
 <script>
 export default {
   name: "Program",
-  props: {
-    title: String,
-    icon: String,
-    open: Boolean,
-  },
-  methods: {
-    openProgram() {
-      this.$emit("openProgram", this.title, this.icon);
-    },
-  },
 };
 </script>
 <style lang="scss" scoped>
