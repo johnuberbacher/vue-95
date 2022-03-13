@@ -2,15 +2,11 @@
   <div
     v-if="minimize"
     class="window"
-    ref="draggable"
-    :class="{ dragging: isDragging, maximize: maximizeWindow }"
+    :class="{ maximize: maximizeWindow }"
     :style="windowPosition"
   >
     <div
       class="menu-bar"
-      @mousedown="handleMouseDown"
-      @mousemove="handleMouseMove"
-      @mouseup="handleMouseUp"
       @dblclick.stop="doubleClick($event)"
     >
       <div class="title">
@@ -72,23 +68,6 @@ export default {
     },
   },
   methods: {
-    handleMouseDown(e) {
-      if (e.target === e.target) {
-        this.isDragging = true;
-      }
-    },
-    handleMouseMove(e) {
-      if (this.isDragging) {
-        this.dragItemCoords = {
-          top:  e.clientY,
-          left: e.clientX,
-        };
-        console.log(this.dragItemCoords.top)
-      }
-    },
-    handleMouseUp() {
-      this.isDragging = false;
-    },
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
       event.preventDefault();
