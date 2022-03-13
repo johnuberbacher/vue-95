@@ -115,7 +115,7 @@ $highlight: #000080;
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    justify-content: start;
+    justify-content: flex-start;
     white-space: nowrap;
     height: 100%;
     width: 100%;
