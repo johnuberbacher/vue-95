@@ -10,13 +10,17 @@
           <div>
             <span>Windows<span>95</span></span>
           </div>
-          <div>
+          <div class="start-menu-program-wrapper">
+            <StartMenuProgram :title="'GitHub'" :icon="'GitHub'" />
+            <div class="divider"></div>
             <StartMenuProgram
               v-for="(program, index) in programs"
               v-bind:key="index"
               :title="program[0]"
               :icon="program[1]"
             />
+            <div class="divider"></div>
+            <StartMenuProgram :title="'Shut Down...'" :icon="'Shutdown'" />
           </div>
         </div>
         <div class="start" v-on:click="toggleStartMenu">
@@ -40,7 +44,7 @@
           @minimizeWindow="minimizeWindow(program[0])"
         />
       </div>
-    <Clock />
+      <Clock />
     </div>
   </div>
 </template>
@@ -161,7 +165,7 @@ $highlight: #000080;
         bottom: calc(100% + 3px);
         left: -4px;
         width: 164px;
-        height: 240px;
+        height: 275px;
         z-index: 2;
         background-color: rgba(191, 193, 192, 1);
         border-style: solid;
@@ -199,6 +203,15 @@ $highlight: #000080;
           &:nth-of-type(2) {
             width: 100%;
           }
+        }
+      }
+      .start-menu-program-wrapper {
+        .divider {
+          margin: 2px 2px 2px 0px;
+          border-style: solid;
+          border-width: 1px;
+          border-color: rgb(254, 254, 254) rgb(223 223 223) rgb(254, 254, 254)
+            rgb(254, 254, 254);
         }
       }
     }

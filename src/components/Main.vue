@@ -66,7 +66,6 @@ export default {
         ["Notepad", "Notepad", true],
         ["Paint", "Paint", true],
         ["Recycle Bin", "RecycleBin", true],
-        ["Folder", "Folder", true],
         
       ],
       programsOpen: [],
