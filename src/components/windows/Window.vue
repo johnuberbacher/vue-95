@@ -1,61 +1,59 @@
-<template>
-  <div v-if="minimize">
+<template v-slot="{title}">
+  <div
+    v-if="minimize"
+    class="window"
+    ref="draggable"
+    :class="{ dragging: isDragging, maximize: maximizeWindow }"
+    :style="windowPosition"
+  >
     <div
-      class="window"
-      ref="draggable"
-      :class="{ dragging: isDragging, maximize: maximizeWindow }"
-      :style="windowPosition"
+      class="menu-bar"
+      @mousedown="handleMouseDown"
+      @mousemove="handleMouseMove"
+      @mouseup="handleMouseUp"
+      @dblclick.stop="doubleClick($event)"
     >
-      <div
-        class="menu-bar"
-        @mousedown="handleMouseDown"
-        @mousemove="handleMouseMove"
-        @mouseup="handleMouseUp"
-        @dblclick.stop="doubleClick($event)"
-      >
-        <div class="title">
-          <span
-            class="icon"
-            :style="{
-              backgroundImage:
-                'url(' + require('@/assets/icon/' + icon + '.png') + ')',
-            }"
-          ></span
-          ><span>{{title}}</span>
+      <div class="title">
+        <span
+          class="icon"
+          :style="{
+            backgroundImage:
+              'url(' + require('@/assets/icon/' + icon + '.png') + ')',
+          }"
+        ></span
+        ><span>{{ title }}</span>
+      </div>
+      <div class="actions">
+        <div v-on:click="minimizeWindow()">
+          <img :src="require('@/assets/icon/minimize.png')" />
         </div>
-        <div class="actions">
-          <div v-on:click="minimizeWindow()">
-            <img :src="require('@/assets/icon/minimize.png')" />
-          </div>
-          <div v-on:click="maximize()">
-            <img :src="require('@/assets/icon/maximize.png')" />
-          </div>
-          <div v-on:click="closeProgram">
-            <img :src="require('@/assets/icon/close.png')" />
-          </div>
+        <div v-on:click="maximize()">
+          <img :src="require('@/assets/icon/maximize.png')" />
+        </div>
+        <div v-on:click="closeProgram">
+          <img :src="require('@/assets/icon/close.png')" />
         </div>
       </div>
-      <WindowBody />
     </div>
+    <div class="file-bar">
+      <div>File</div>
+      <div>Edit</div>
+      <div>Test</div>
+      <div>Test</div>
+    </div>
+    <slot></slot>
   </div>
 </template>
 <script>
-import WindowBody from "./FileExplorer.vue";
-const clamp = (num, lower = 0, upper) => {
-  return num < lower ? lower : num > upper ? upper : num;
-};
 export default {
   name: "Window",
-  components: {
-    WindowBody,
-  },
   data() {
     return {
       maximizeWindow: false,
       isDragging: false,
       dragItemCoords: {
-        top: 5,
-        left: 5,
+        top: 75,
+        left: 110,
       },
     };
   },
@@ -67,8 +65,6 @@ export default {
   },
   computed: {
     windowPosition() {
-      console.log(this.dragItemCoords.top);
-      console.log(this.dragItemCoords.left);
       return {
         top: this.dragItemCoords.top + "px",
         left: this.dragItemCoords.left + "px",
@@ -76,33 +72,18 @@ export default {
     },
   },
   methods: {
-    clampInsideBoundary(x, y, e) {
-      const boundaryPos = this.boundary.getBoundingClientRect();
-      const maxWidth = boundaryPos.width - e.target.clientWidth;
-      const maxHeight = boundaryPos.height - e.target.clientHeight;
-
-      return {
-        x: clamp(x - boundaryPos.x, 0, maxWidth),
-        y: clamp(y - boundaryPos.y, 0, maxHeight),
-      };
-    },
-    findPositionInsideBound(e) {
-      const x = e.clientX - e.target.clientWidth / 2;
-      const y = e.clientY - e.target.clientHeight / 2;
-
-      return this.clampInsideBoundary(x, y, e);
-    },
     handleMouseDown(e) {
       if (e.target === e.target) {
         this.isDragging = true;
-        console.log("clicked");
       }
     },
     handleMouseMove(e) {
       if (this.isDragging) {
-        const position = this.findPositionInsideBound(e);
-
-        this.dragItemCoords = { left: position.x, top: position.y };
+        this.dragItemCoords = {
+          top:  e.clientY,
+          left: e.clientX,
+        };
+        console.log(this.dragItemCoords.top)
       }
     },
     handleMouseUp() {
@@ -127,14 +108,20 @@ export default {
 <style lang="scss" scoped>
 $highlight: #000080;
 .window {
+  height: 66%;
+  width: 66%;
   position: absolute;
   resize: both;
   overflow: auto;
-  top: calc(70% - 200px);
-  left: calc(66% - 200px);
+  top: 0;
+  left: 0;
   min-width: 200px;
-  z-index: 1;
+  z-index: 2;
   padding: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
   background-color: rgba(191, 193, 192, 1);
   border-style: solid;
   border-width: 1px;
@@ -151,6 +138,29 @@ $highlight: #000080;
     resize: none !important;
     width: auto !important;
     height: auto !important;
+  }
+  .file-bar {
+    padding: 2px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    > div {
+      cursor: default;
+      padding: 1px 4px 0px 2px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 16px;
+      &:hover,
+      &:active {
+        background-color: $highlight;
+        color: white;
+      }
+    }
   }
   .menu-bar {
     height: 18px;

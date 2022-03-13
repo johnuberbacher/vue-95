@@ -4,7 +4,7 @@
       <div
         ref="desktop"
         class="desktop"
-        v-on:click="resetDesktopContextMenu"
+        v-on:click.stop="resetDesktopContextMenu"
         @contextmenu.prevent="desktopContextMenu"
       >
         <div class="programs" ref="boundary">
@@ -17,7 +17,9 @@
             :boundary="this.$refs.boundary"
             @closeProgram="closeProgram(program[0])"
             @minimizeWindow="minimizeWindow(program[0])"
-          />
+          >
+          <component :is="program[1]"></component>
+          </Window>
           <Program
             v-for="(program, index) in programs"
             v-bind:key="index"
@@ -45,6 +47,8 @@ import Program from "./desktop/programs/Program.vue";
 import DesktopContextMenu from "./desktop/DesktopContextMenu.vue";
 import Taskbar from "./taskbar/Taskbar.vue";
 import Window from "./windows/Window.vue";
+import Internet from "./windows/Internet.vue";
+import Notepad from "./windows/Notepad.vue";
 export default {
   name: "Main",
   props: {
@@ -59,7 +63,7 @@ export default {
         ["My Computer", "MyComputer", true],
         ["My Documents", "Documents", true],
         ["Internet", "Internet", true],
-        ["Notepad", "NotePad", true],
+        ["Notepad", "Notepad", true],
         ["Folder", "Folder", true],
       ],
       programsOpen: [],
@@ -70,6 +74,8 @@ export default {
     DesktopContextMenu,
     Taskbar,
     Window,
+    Notepad,
+    Internet,
   },
   methods: {
     openProgram(programTitle, programIcon) {
@@ -206,6 +212,7 @@ $highlight: #000080;
   max-width: 640px;
   height: 480px;
   position: relative;
+  overflow: hidden;
   &:after {
     content: " ";
     display: block;

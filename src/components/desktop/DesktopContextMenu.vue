@@ -34,7 +34,6 @@ $highlight: #000080;
 .desktopContextMenu {
   position: absolute;
   min-width: 122px;
-  z-index: 1;
   padding: 2px;
   background-color: rgba(191, 193, 192, 1);
   border-style: solid;
