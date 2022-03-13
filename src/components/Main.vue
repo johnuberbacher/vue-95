@@ -42,7 +42,6 @@
 </template>
 <script>
 import Program from "./desktop/programs/Program.vue";
-import Boot from "./Boot.vue";
 import DesktopContextMenu from "./desktop/DesktopContextMenu.vue";
 import Taskbar from "./taskbar/Taskbar.vue";
 import Window from "./windows/Window.vue";
@@ -53,7 +52,6 @@ export default {
   },
   data() {
     return {
-      bootSystem: true,
       desktopContextMenuActive: false,
       desktopStartMenuActive: false,
       desktopContextMenuPosition: [0, 0],
@@ -68,20 +66,12 @@ export default {
     };
   },
   components: {
-    Boot,
     Program,
     DesktopContextMenu,
     Taskbar,
     Window,
   },
   methods: {
-    boot() {
-      /*var audio = new Audio(require('@/assets/audio/boot.mp3'));
-      audio.play();*/
-      setTimeout(() => {
-        this.bootSystem = false;
-      }, 10);
-    },
     openProgram(programTitle, programIcon) {
       if (this.programsOpen.find(([title]) => title === programTitle)) {
         console.log("found");
