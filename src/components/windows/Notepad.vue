@@ -1,6 +1,6 @@
 <template>
   <div class="notepad">
-    <textarea></textarea>
+    <textarea autofocus></textarea>
   </div>
 </template>
 <script>
@@ -14,6 +14,8 @@ $highlight: #000080;
   width: 100%;
   height: 100%;
   textarea {
+    border-radius: 0px;
+    padding: 4px 6px;
     resize: none;
     height: 100%;
     width: 100%;

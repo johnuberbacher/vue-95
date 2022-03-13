@@ -64,8 +64,9 @@ export default {
         ["My Documents", "Documents", true],
         ["Internet", "Internet", true],
         ["Notepad", "Notepad", true],
-        ["Folder", "Folder", true],
+        ["Paint", "Paint", true],
         ["Recycle Bin", "RecycleBin", true],
+        ["Folder", "Folder", true],
         
       ],
       programsOpen: [],

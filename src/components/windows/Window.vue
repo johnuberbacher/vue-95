@@ -94,6 +94,7 @@ $highlight: #000080;
   overflow: auto;
   top: 0;
   left: 0;
+  min-height: 150px;
   min-width: 200px;
   z-index: 2;
   padding: 2px;

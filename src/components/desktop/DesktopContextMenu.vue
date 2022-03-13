@@ -4,12 +4,12 @@
       left: this.position[0] + 'px',
       top: this.position[1] + 'px',
     }"
-    
     class="desktopContextMenu"
   >
-    <div class="link">Test</div>
-    <div class="link">Test</div>
-    <div class="link">Test</div>
+    <div class="link"><span>Arrange Icons</span> <span>›</span></div>
+    <div class="link">Line Up Icons</div>
+    <div class="divider"></div>
+    <div class="link"><span>New</span> <span>›</span></div>
     <div class="divider"></div>
     <div class="link">Properties</div>
   </div>
@@ -25,8 +25,7 @@ export default {
       showContextMenu: this.active,
     };
   },
-  methods: {
-  }
+  methods: {},
 };
 </script>
 <style lang="scss" scoped>
@@ -46,11 +45,20 @@ $highlight: #000080;
   -moz-user-select: none;
   -webkit-user-select: none;
   .link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     cursor: pointer;
-    padding: 4px 12px;
+    height: 24px;
+    padding: 4px 8px 4px 16px;
     &:hover {
       background-color: $highlight;
       color: white;
+    }
+    span {
+      &:nth-of-type(2) {
+        font-weight: bold;
+      }
     }
   }
   .divider {

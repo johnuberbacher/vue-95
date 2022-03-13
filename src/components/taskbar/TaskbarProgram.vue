@@ -6,7 +6,7 @@
         backgroundImage: 'url(' + require('@/assets/icon/' + icon + '.png') + ')',
       }"
     ></span>
-    <span>{{title}}</span>
+    <span class="title">{{title}}</span>
   </div>
 </template>
 <script>
@@ -35,7 +35,9 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  width: 160px;
+  min-width: 60px;
+  width: 100%;
+  max-width: 160px;
   border-style: solid;
   border-width: 1px;
   border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
@@ -57,6 +59,11 @@ export default {
     background-size: 16px 16px;
     position: relative;
     display: block;
+  }
+  .title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>
