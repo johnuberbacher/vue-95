@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="minimize">
     <div
       class="window"
       ref="draggable"
@@ -113,7 +113,7 @@ export default {
       event.preventDefault();
     },
     closeProgram() {
-      this.$emit("closeProgram", this.title, this.icon);
+      this.$emit("closeProgram", this.title);
     },
     maximize() {
       console.log("clicked");

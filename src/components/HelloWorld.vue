@@ -12,6 +12,7 @@
           :title="program[0]"
           :icon="program[1]"
           :boundary="this.$refs.boundary"
+          @closeProgram="closeProgram(program[0])"
         />
         <Program
           v-for="(program, index) in programs"
@@ -26,7 +27,10 @@
         :position="this.desktopContextMenuPosition"
       />
     </div>
-    <Taskbar :programsOpen="programsOpen" :desktopStartMenuActive="this.desktopStartMenuActive" />
+    <Taskbar
+      :programsOpen="programsOpen"
+      :desktopStartMenuActive="this.desktopStartMenuActive"
+    />
   </div>
 </template>
 <script>
@@ -49,8 +53,7 @@ export default {
         ["Notepad", "NotePad", true],
         ["Folder", "Folder", true],
       ],
-      programsOpen: [
-      ],
+      programsOpen: [],
     };
   },
   components: {
@@ -61,11 +64,16 @@ export default {
   },
   methods: {
     openProgram(programTitle, programIcon) {
-      this.programsOpen.push(
-        [programTitle, programIcon],
-      )
-      console.log([programTitle, programIcon])
-      console.log('programsOpen:' + this.programsOpen)
+      if (this.programsOpen.find(([title]) => title === programTitle)) {
+        console.log("found");
+      } else {
+        this.programsOpen.push([programTitle, programIcon]);
+      }
+    },
+    closeProgram(program) {
+      for (let i = 0; i < this.programsOpen.length; i++) {
+        if (this.programsOpen[i][0] == program) this.programsOpen.splice(i, 1);
+      }
     },
     resetDesktopContextMenu() {
       this.desktopContextMenuActive = false;
