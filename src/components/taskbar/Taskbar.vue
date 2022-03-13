@@ -28,7 +28,7 @@
         v-bind:key="index"
         :title="program[0]"
         :icon="program[1]"
-        @minimizeProgram="minimizeProgram(program[0])"
+        @minimizeWindow="minimizeWindow(program[0])"
       />
     </div>
     <Clock />
@@ -62,8 +62,8 @@ export default {
     this.activeStartMenu = this.desktopStartMenuActive;
   },
   methods: {
-    minimizeProgram(programTitle) {
-      this.$emit("minimizeProgram", programTitle);
+    minimizeWindow(programTitle) {
+      this.$emit("minimizeWindow", programTitle);
     },
     onClickOutside(event) {
       console.log("Clicked outside. Event: ", event);

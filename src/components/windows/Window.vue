@@ -24,7 +24,7 @@
           ><span>{{title}}</span>
         </div>
         <div class="actions">
-          <div>
+          <div v-on:click="minimizeWindow()">
             <img :src="require('@/assets/icon/minimize.png')" />
           </div>
           <div v-on:click="maximize()">
@@ -115,8 +115,10 @@ export default {
     closeProgram() {
       this.$emit("closeProgram", this.title);
     },
+    minimizeWindow() {
+      this.$emit("minimizeWindow", this.title);
+    },
     maximize() {
-      console.log("clicked");
       this.maximizeWindow = !this.maximizeWindow;
     },
   },

@@ -11,8 +11,10 @@
           v-for="(program, index) in programsOpen"
           :title="program[0]"
           :icon="program[1]"
+          :minimize="program[2]"
           :boundary="this.$refs.boundary"
           @closeProgram="closeProgram(program[0])"
+          @minimizeWindow="minimizeWindow(program[0])"
         />
         <Program
           v-for="(program, index) in programs"
@@ -30,6 +32,7 @@
     <Taskbar
       :programsOpen="programsOpen"
       :desktopStartMenuActive="this.desktopStartMenuActive"
+      @minimizeWindow="minimizeWindow"
     />
   </div>
 </template>
@@ -67,12 +70,23 @@ export default {
       if (this.programsOpen.find(([title]) => title === programTitle)) {
         console.log("found");
       } else {
-        this.programsOpen.push([programTitle, programIcon]);
+        this.programsOpen.push([programTitle, programIcon, true]);
       }
     },
     closeProgram(program) {
       for (let i = 0; i < this.programsOpen.length; i++) {
         if (this.programsOpen[i][0] == program) this.programsOpen.splice(i, 1);
+      }
+    },
+    minimizeWindow(program) {
+      for (let i = 0; i < this.programsOpen.length; i++) {
+        if (this.programsOpen[i][0] == program) this.programsOpen[i][2] = !this.programsOpen[i][2]
+      }
+    },
+    minimizeProgram(program) {
+      console.log('here')
+      for (let i = 0; i < this.programsOpen.length; i++) {
+        if (this.programsOpen[i][0] == program) this.programsOpen[i][2] = !this.programsOpen[i][2]
       }
     },
     resetDesktopContextMenu() {

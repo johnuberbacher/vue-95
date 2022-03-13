@@ -1,5 +1,5 @@
 <template>
-  <div class="taskbar-program" v-on:click="minimizeProgram" >
+  <div class="taskbar-program" v-on:click="minimizeWindow" >
     <span
       class="icon"
       :style="{
@@ -17,8 +17,8 @@ export default {
     icon: String,
   },
   methods: {
-    minimizeProgram() {
-      this.$emit("minimizeProgram", this.title);
+    minimizeWindow() {
+      this.$emit("minimizeWindow", this.title);
     },
   }
 };
