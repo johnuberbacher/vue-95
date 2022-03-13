@@ -34,6 +34,7 @@ $highlight: #000080;
   display: flex;
   flex-direction: row;
   align-items: center;
+  white-space: nowrap;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;

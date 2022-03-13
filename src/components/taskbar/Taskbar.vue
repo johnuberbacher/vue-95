@@ -31,15 +31,17 @@
         </div>
       </div>
       <div class="divider"></div>
-      <TaskbarProgram
-        v-for="(program, index) in programsOpen"
-        v-bind:key="index"
-        :title="program[0]"
-        :icon="program[1]"
-        @minimizeWindow="minimizeWindow(program[0])"
-      />
-    </div>
+      <div class="taskbar-program-wrapper">
+        <TaskbarProgram
+          v-for="(program, index) in programsOpen"
+          v-bind:key="index"
+          :title="program[0]"
+          :icon="program[1]"
+          @minimizeWindow="minimizeWindow(program[0])"
+        />
+      </div>
     <Clock />
+    </div>
   </div>
 </template>
 <script>
@@ -110,7 +112,9 @@ $highlight: #000080;
     flex-direction: row;
     align-items: stretch;
     justify-content: start;
+    white-space: nowrap;
     height: 100%;
+    width: 100%;
     .start-menu-wrapper {
       position: relative;
       user-select: none;
@@ -158,6 +162,7 @@ $highlight: #000080;
         left: -4px;
         width: 164px;
         height: 240px;
+        z-index: 2;
         background-color: rgba(191, 193, 192, 1);
         border-style: solid;
         border-width: 1px;
@@ -204,6 +209,14 @@ $highlight: #000080;
     border-width: 1px;
     border-color: rgb(254, 254, 254) rgb(223 223 223) rgb(254, 254, 254)
       rgb(254, 254, 254);
+  }
+  .taskbar-program-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+    width: 100%;
   }
 }
 .clock {

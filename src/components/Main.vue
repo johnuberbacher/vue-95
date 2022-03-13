@@ -65,6 +65,8 @@ export default {
         ["Internet", "Internet", true],
         ["Notepad", "Notepad", true],
         ["Folder", "Folder", true],
+        ["Recycle Bin", "RecycleBin", true],
+        
       ],
       programsOpen: [],
     };
@@ -251,13 +253,11 @@ $highlight: #000080;
 .programs {
   height: 100%;
   display: flex;
-  flex-direction: column;
-  @media (min-width: 992px) {
-    flex-direction: row;
-  }
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
+  align-content: flex-start;
   .child-class {
     width: auto;
     @media (min-width: 992px) {

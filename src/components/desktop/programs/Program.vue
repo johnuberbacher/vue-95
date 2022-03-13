@@ -28,7 +28,7 @@ export default {
 <style lang="scss" scoped>
 $highlight: #000080;
 .program {
-  height: 76px;
+  height: 74px;
   width: 86px;
   display: flex;
   flex-direction: column;

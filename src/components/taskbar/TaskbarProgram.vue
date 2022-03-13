@@ -29,6 +29,7 @@ export default {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  text-overflow: ellipsis;
   padding: 2px 4px;
   display: flex;
   flex-direction: row;
