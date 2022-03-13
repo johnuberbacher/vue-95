@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="container">
     <div
       class="desktop"
       v-on:click="resetDesktopContextMenu"
@@ -42,7 +42,7 @@ import DesktopContextMenu from "./desktop/DesktopContextMenu.vue";
 import Taskbar from "./taskbar/Taskbar.vue";
 import Window from "./windows/Window.vue";
 export default {
-  name: "HelloWorld",
+  name: "Main",
   props: {
     msg: String,
   },
@@ -126,13 +126,10 @@ $highlight: #000080;
   -webkit-font-smoothing: none;
 }
 
-.hello {
+.container {
   width: 100%;
   max-width: 640px;
   height: 480px;
-  font-weight: 300;
-  font-size: 12px;
-  overflow: hidden;
 }
 
 .programs {

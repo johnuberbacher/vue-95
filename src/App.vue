@@ -1,24 +1,25 @@
 <template>
- <!-- <img alt="Vue logo" src="./assets/logo.png">-->
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Main />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Main from "./components/Main.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Main,
+  },
+};
 </script>
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
-html, body, #app {
+html,
+body,
+#app {
   min-height: 100%;
   height: 100%;
   margin: 0;
@@ -28,8 +29,14 @@ html, body, #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: #000000;
+  width: 100%;
+  height: 100%;
+  font-weight: 300;
+  font-size: 12px;
+  overflow: hidden;
 }
 </style>
