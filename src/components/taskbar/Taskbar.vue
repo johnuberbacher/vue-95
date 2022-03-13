@@ -7,9 +7,17 @@
           v-show="this.activeStartMenu"
           v-click-outside="onClickOutside"
         >
-          <StartMenuProgram :title="'My Computer'" :icon="'MyComputer'" />
-          <StartMenuProgram :title="'My Documents'" :icon="'Documents'" />
-          <StartMenuProgram :title="'Notepad'" :icon="'NotePad'" />
+          <div>
+            <span>Windows<span>95</span></span>
+          </div>
+          <div>
+            <StartMenuProgram
+              v-for="(program, index) in programs"
+              v-bind:key="index"
+              :title="program[0]"
+              :icon="program[1]"
+            />
+          </div>
         </div>
         <div class="start" v-on:click="toggleStartMenu">
           <div
@@ -50,6 +58,7 @@ export default {
     clickOutside: vClickOutside.directive,
   },
   props: {
+    programs: Object,
     programsOpen: Object,
     desktopStartMenuActive: Boolean,
   },
@@ -140,6 +149,10 @@ $highlight: #000080;
         }
       }
       .start-menu {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
         position: absolute;
         z-index: 3;
         bottom: calc(100% + 3px);
@@ -154,6 +167,35 @@ $highlight: #000080;
           rgb(254, 254, 254);
         box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
           rgb(132 133 132) 0px 0px 0px 1px inset;
+        > div {
+          &:nth-of-type(1) {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            margin-right: 3px;
+            background-color: #808080;
+            height: 100%;
+            width: 24px;
+            > span {
+              opacity: 0.8;
+              display: block;
+              transform: rotate(270deg);
+              margin-bottom: 48px;
+              margin-left: 1px;
+              font-weight: 600;
+              color: #c0c0c0;
+              font-size: 22px;
+              span {
+                padding-left: 2px;
+                font-weight: 300;
+                color: white;
+              }
+            }
+          }
+          &:nth-of-type(2) {
+            width: 100%;
+          }
+        }
       }
     }
   }

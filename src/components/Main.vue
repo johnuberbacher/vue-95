@@ -30,6 +30,7 @@
       />
     </div>
     <Taskbar
+      :programs="programs"
       :programsOpen="programsOpen"
       :desktopStartMenuActive="this.desktopStartMenuActive"
       @minimizeWindow="minimizeWindow"
@@ -53,6 +54,8 @@ export default {
       desktopContextMenuPosition: [0, 0],
       programs: [
         ["My Computer", "MyComputer", true],
+        ["My Documents", "Documents", true],
+        ["Internet", "Internet", true],
         ["Notepad", "NotePad", true],
         ["Folder", "Folder", true],
       ],
@@ -80,13 +83,15 @@ export default {
     },
     minimizeWindow(program) {
       for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == program) this.programsOpen[i][2] = !this.programsOpen[i][2]
+        if (this.programsOpen[i][0] == program)
+          this.programsOpen[i][2] = !this.programsOpen[i][2];
       }
     },
     minimizeProgram(program) {
-      console.log('here')
+      console.log("here");
       for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == program) this.programsOpen[i][2] = !this.programsOpen[i][2]
+        if (this.programsOpen[i][0] == program)
+          this.programsOpen[i][2] = !this.programsOpen[i][2];
       }
     },
     resetDesktopContextMenu() {

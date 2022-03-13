@@ -35,6 +35,7 @@ $highlight: #000080;
   }
   .icon {
     width: 24px;
+    min-width: 24px;
     height: 24px;
     margin-right: 8px;
     background-size: 24px 24px;
