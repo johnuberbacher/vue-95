@@ -2,11 +2,13 @@
   <div
     v-if="minimize"
     class="window"
+    ref="draggableContainer"
     :class="{ maximize: maximizeWindow }"
     :style="windowPosition"
   >
     <div
       class="menu-bar"
+      @mousedown="dragMouseDown"
       @dblclick.stop="doubleClick($event)"
     >
       <div class="title">
@@ -47,9 +49,11 @@ export default {
     return {
       maximizeWindow: false,
       isDragging: false,
-      dragItemCoords: {
-        top: 75,
-        left: 110,
+      positions: {
+        clientX: undefined,
+        clientY: undefined,
+        movementX: 0,
+        movementY: 0,
       },
     };
   },
@@ -59,15 +63,33 @@ export default {
     minimize: Boolean,
     boundary: Object,
   },
-  computed: {
-    windowPosition() {
-      return {
-        top: this.dragItemCoords.top + "px",
-        left: this.dragItemCoords.left + "px",
-      };
-    },
-  },
   methods: {
+    dragMouseDown: function (event) {
+      event.preventDefault();
+      this.positions.clientX = event.clientX;
+      this.positions.clientY = event.clientY;
+      document.onmousemove = this.dragMove;
+      document.onmouseup = this.dragMouseUp;
+    },
+    dragMove: function (event) {
+      event.preventDefault();
+      this.positions.movementX = this.positions.clientX - event.clientX;
+      this.positions.movementY = this.positions.clientY - event.clientY;
+      this.positions.clientX = event.clientX;
+      this.positions.clientY = event.clientY;
+      this.$refs.draggableContainer.style.top =
+        this.$refs.draggableContainer.offsetTop -
+        this.positions.movementY +
+        "px";
+      this.$refs.draggableContainer.style.left =
+        this.$refs.draggableContainer.offsetLeft -
+        this.positions.movementX +
+        "px";
+    },
+    dragMouseUp() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    },
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
       event.preventDefault();
@@ -87,13 +109,13 @@ export default {
 <style lang="scss" scoped>
 $highlight: #000080;
 .window {
-  height: 66%;
-  width: 66%;
+  height: 50%;
+  width: 50%;
   position: absolute;
   resize: both;
   overflow: auto;
-  top: 0;
-  left: 0;
+  top: 10%;
+  left: 10%;
   min-height: 150px;
   min-width: 200px;
   z-index: 2;

@@ -18,7 +18,7 @@
             @closeProgram="closeProgram(program[0])"
             @minimizeWindow="minimizeWindow(program[0])"
           >
-          <component :is="program[1]"></component>
+            <component :is="program[1]"></component>
           </Window>
           <Program
             v-for="(program, index) in programs"
@@ -58,6 +58,7 @@ export default {
     return {
       desktopContextMenuActive: false,
       desktopStartMenuActive: false,
+      desktopVolumeMenuActive: false,
       desktopContextMenuPosition: [0, 0],
       programs: [
         ["My Computer", "MyComputer", true],
@@ -66,7 +67,6 @@ export default {
         ["Notepad", "Notepad", true],
         ["Paint", "Paint", true],
         ["Recycle Bin", "RecycleBin", true],
-        
       ],
       programsOpen: [],
     };
@@ -108,6 +108,7 @@ export default {
     resetDesktopContextMenu() {
       this.desktopContextMenuActive = false;
       this.desktopStartMenuActive = false;
+      this.desktopVolumeMenuActive = false;
     },
     desktopContextMenu(e) {
       console.log(this.$refs.desktop.style.marginLeft);
@@ -245,6 +246,7 @@ $highlight: #000080;
         rgba(0, 0, 255, 0.1)
       );
     z-index: 30;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
     background-size: 100% 2px, 3px 100%;
     pointer-events: none;
   }

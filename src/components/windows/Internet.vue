@@ -1,6 +1,6 @@
 <template>
-  <div class="iframe">
-    <iframe src="https://www.google.com/webhp?igu=1"></iframe>
+  <div class="embed">
+    <embed src="https://www.google.com/webhp?igu=1"/>
   </div>
 </template>
 <script>
@@ -10,9 +10,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 $highlight: #000080;
-.iframe {
+.embed {
   height: 100%;
-  iframe {
+  embed {
     resize: none;
     height: 100%;
     width: 100%;
