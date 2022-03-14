@@ -2,9 +2,7 @@
   <div
     v-if="minimize"
     class="window"
-    ref="draggableContainer"
     :class="{ maximize: maximizeWindow }"
-    :style="windowPosition"
   >
     <div
       class="menu-bar"
@@ -49,12 +47,6 @@ export default {
     return {
       maximizeWindow: false,
       isDragging: false,
-      positions: {
-        clientX: undefined,
-        clientY: undefined,
-        movementX: 0,
-        movementY: 0,
-      },
     };
   },
   props: {
@@ -64,32 +56,6 @@ export default {
     boundary: Object,
   },
   methods: {
-    dragMouseDown: function (event) {
-      event.preventDefault();
-      this.positions.clientX = event.clientX;
-      this.positions.clientY = event.clientY;
-      document.onmousemove = this.dragMove;
-      document.onmouseup = this.dragMouseUp;
-    },
-    dragMove: function (event) {
-      event.preventDefault();
-      this.positions.movementX = this.positions.clientX - event.clientX;
-      this.positions.movementY = this.positions.clientY - event.clientY;
-      this.positions.clientX = event.clientX;
-      this.positions.clientY = event.clientY;
-      this.$refs.draggableContainer.style.top =
-        this.$refs.draggableContainer.offsetTop -
-        this.positions.movementY +
-        "px";
-      this.$refs.draggableContainer.style.left =
-        this.$refs.draggableContainer.offsetLeft -
-        this.positions.movementX +
-        "px";
-    },
-    dragMouseUp() {
-      document.onmouseup = null;
-      document.onmousemove = null;
-    },
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
       event.preventDefault();
