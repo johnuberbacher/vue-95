@@ -16,7 +16,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$highlight: #000080;
 .program {
   height: 72px;
   width: 72px;
@@ -28,8 +27,6 @@ $highlight: #000080;
   padding: 2px;
   color: white;
   user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
   .title {
     border: 1px solid transparent;
     cursor: default;
@@ -44,11 +41,11 @@ $highlight: #000080;
   }
   &:active {
     span.title {
-      background-color: $highlight;
+      background-color: $highlightV95;
       border: 1px dotted #939393;
     }
     .icon {
-      filter: opacity(0.5) drop-shadow(0 0 0 $highlight);
+      filter: opacity(0.5) drop-shadow(0 0 0 $highlightV95);
     }
   }
 }

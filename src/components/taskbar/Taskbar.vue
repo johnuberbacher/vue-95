@@ -4,14 +4,14 @@
       <div class="start-menu-wrapper">
         <div
           class="start-menu"
-          v-show="this.activeStartMenu"
+          v-if="this.activeStartMenu"
           v-click-outside="onClickOutside"
         >
           <div>
             <span>Windows<span>95</span></span>
           </div>
           <div class="start-menu-program-wrapper">
-            <StartMenuProgram :title="'GitHub'" :icon="'GitHub'" />
+            <StartMenuProgram href="www.google.com" :title="'GitHub'" :icon="'GitHub'" />
             <div class="divider"></div>
             <StartMenuProgram
               v-for="(program, index) in programs"
@@ -96,21 +96,14 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$highlight: #000080;
 .taskbar {
+  @include v95;
   padding: 2px 3px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   height: 28px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
-    rgb(254, 254, 254);
-  box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
-    rgb(132 133 132) 0px 0px 0px 1px inset;
-  background: rgb(198, 198, 198);
   .intro {
     display: flex;
     flex-direction: row;
@@ -122,9 +115,8 @@ $highlight: #000080;
     .start-menu-wrapper {
       position: relative;
       user-select: none;
-      -moz-user-select: none;
-      -webkit-user-select: none;
       .start {
+        @include v95;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -133,13 +125,6 @@ $highlight: #000080;
         padding: 2px 4px;
         font-weight: bold;
         height: 100%;
-        background-color: rgba(191, 193, 192, 1);
-        border-style: solid;
-        border-width: 1px;
-        border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
-          rgb(254, 254, 254);
-        box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
-          rgb(132 133 132) 0px 0px 0px 1px inset;
         &:active {
           border-style: solid;
           border-width: 1px;
@@ -157,6 +142,7 @@ $highlight: #000080;
         }
       }
       .start-menu {
+        @include v95();
         display: flex;
         flex-direction: row;
         align-items: flex-start;
@@ -167,14 +153,7 @@ $highlight: #000080;
         width: 164px;
         height: 275px;
         z-index: 2;
-        background-color: rgba(191, 193, 192, 1);
-        border-style: solid;
-        border-width: 1px;
         padding: 2px 3px 3px 2px;
-        border-color: rgb(254, 254, 254) rgb(10, 10, 10) rgb(10, 10, 10)
-          rgb(254, 254, 254);
-        box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset,
-          rgb(132 133 132) 0px 0px 0px 1px inset;
         > div {
           &:nth-of-type(1) {
             display: flex;

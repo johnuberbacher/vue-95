@@ -20,7 +20,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$highlight: #000080;
 .start-menu-program {
   cursor: pointer;
   display: flex;
@@ -31,7 +30,7 @@ $highlight: #000080;
   padding: 0px 6px;
   &:hover,
   &:active {
-    background-color: $highlight;
+    background-color: $highlightV95;
     color: white;
   }
   .icon {

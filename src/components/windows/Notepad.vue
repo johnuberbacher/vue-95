@@ -9,7 +9,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$highlight: #000080;
 .notepad {
   width: 100%;
   height: 100%;
