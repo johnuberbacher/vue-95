@@ -7,7 +7,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$highlight: #000080;
 .window-body {
   overflow: auto;
   height: calc(100% - 22px);

@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div class="container" 
+    :class="{ fullscreenMode: fullscreenMode, crtMode: crtMode, }">
     <div>
       <div
         ref="desktop"
@@ -31,6 +32,8 @@
         <DesktopContextMenu
           v-if="this.desktopContextMenuActive"
           :position="this.desktopContextMenuPosition"
+          @fullscreenMode="this.fullscreenMode = !this.fullscreenMode"
+          @crtMode="this.crtMode = !this.crtMode"
         />
       </div>
       <Taskbar
@@ -69,6 +72,8 @@ export default {
         ["Recycle Bin", "RecycleBin", true],
       ],
       programsOpen: [],
+      fullscreenMode: false,
+      crtMode: true,
     };
   },
   components: {
@@ -125,7 +130,6 @@ export default {
 <style lang="scss" scoped>
 $cursor-arrow: url("../assets/cursor/arrow.png"), default;
 $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
-$highlight: #000080;
 
 @font-face {
   font-family: "W95A";
@@ -216,6 +220,7 @@ $highlight: #000080;
   height: 480px;
   position: relative;
   overflow: hidden;
+  &.crtMode {
   &:after {
     content: " ";
     display: block;
@@ -247,8 +252,20 @@ $highlight: #000080;
       );
     z-index: 30;
     box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
-    background-size: 100% 2px, 3px 100%;
+    background-size: 100% 3px, 3px 100%;
     pointer-events: none;
+  }
+  }
+  &.fullscreenMode {
+    max-width: 100%;
+    height: 100%;
+  }
+  > div {
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    flex-direction: column;
   }
 }
 
@@ -305,8 +322,7 @@ $highlight: #000080;
 }
 .desktop {
   width: 100%;
-  max-width: 640px;
-  height: 452px;
+  height: 100%;
   padding: 0;
   position: relative;
   background-color: #008080;

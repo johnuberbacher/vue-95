@@ -9,5 +9,12 @@ module.exports = {
         terserOptions.keep_fnames = true
         return args
       })
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: '@import "@/assets/scss/variables.scss";'
+      }
+    }
   }
 }

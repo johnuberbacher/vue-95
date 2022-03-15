@@ -110,7 +110,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$highlight: #000080;
 .window {
   height: 50%;
   width: 50%;
@@ -150,10 +149,8 @@ $highlight: #000080;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    > div {
+    user-select: none;  
+      > div {
       cursor: default;
       padding: 1px 4px 0px 2px;
       display: flex;
@@ -162,7 +159,7 @@ $highlight: #000080;
       height: 16px;
       &:hover,
       &:active {
-        background-color: $highlight;
+        background-color: $highlightV95;
         color: white;
       }
     }
@@ -173,12 +170,10 @@ $highlight: #000080;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: $highlight;
+    background-color: $highlightV95;
     padding: 0px 3px;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    .title {
+    user-select: none;  
+      .title {
       padding: 2px 0px;
       display: flex;
       flex-direction: row;
