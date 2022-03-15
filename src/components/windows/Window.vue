@@ -6,8 +6,11 @@
   >
     <div
       class="menu-bar"
-      @mousedown="dragMouseDown"
       @dblclick.stop="doubleClick($event)"
+      @mousedown="mouseDown($event)"
+      @mouseup="mouseUp()"
+      @mousemove="mouseMove($event)"
+      @mouseleave="mouseLeave($event)"
     >
       <div class="title">
         <span
@@ -45,6 +48,12 @@ export default {
   name: "Window",
   data() {
     return {
+      pointer: {
+        state: 'up',
+        target: {},
+        xDiff: 0,
+        yDiff: 0,
+      },
       maximizeWindow: false,
       isDragging: false,
     };
@@ -59,6 +68,34 @@ export default {
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
       event.preventDefault();
+    },
+    mouseDown(event) {
+      let elmt = event.target.parentNode;
+      this.pointer.state = 'down';
+      if (this.pointer.yDiff == 0) this.pointer.yDiff = (elmt.offsetTop - event.clientY);
+      if (this.pointer.xDiff == 0) this.pointer.xDiff = (elmt.offsetLeft - event.clientX);
+    },
+    mouseMove(event) {
+      if (this.pointer.state == 'down') {
+        let elmt = event.target.parentNode;
+        elmt.style.top = (this.pointer.yDiff + event.clientY) + 'px';
+        elmt.style.left = (this.pointer.xDiff + event.clientX) + 'px';
+      }
+    },
+    mouseLeave(event) {
+      if (this.pointer.state == 'down') {
+        this.mouseMove(event);
+      } else {
+        this.releaseWindow();
+      }
+    },
+    mouseUp() {
+      this.releaseWindow();
+    },
+    releaseWindow() {
+      this.pointer.state = 'up';
+      this.pointer.xDiff = 0;
+      this.pointer.yDiff = 0;
     },
     closeProgram() {
       this.$emit("closeProgram", this.title);
