@@ -23,13 +23,13 @@
         ><span>{{ title }}</span>
       </div>
       <div class="actions">
-        <div v-on:click="minimizeWindow()">
+        <div v-on:click="minimizeWindow()" @mouseleave="releaseWindow()">
           <img :src="require('@/assets/icon/minimize.png')" />
         </div>
-        <div v-on:click="maximize()">
+        <div v-on:click="maximize()" @mouseleave="releaseWindow()">
           <img :src="require('@/assets/icon/maximize.png')" />
         </div>
-        <div v-on:click="closeProgram">
+        <div v-on:click="closeProgram" @mouseleave="releaseWindow()">
           <img :src="require('@/assets/icon/close.png')" />
         </div>
       </div>
@@ -50,12 +50,10 @@ export default {
     return {
       pointer: {
         state: 'up',
-        target: {},
         xDiff: 0,
         yDiff: 0,
       },
       maximizeWindow: false,
-      isDragging: false,
     };
   },
   props: {
@@ -179,6 +177,7 @@ export default {
       flex-direction: row;
       align-items: center;
       color: white;
+      pointer-events: none;
       .icon {
         width: 16px;
         height: 16px;
