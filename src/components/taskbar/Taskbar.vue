@@ -41,7 +41,7 @@
           v-bind:key="index"
           :title="program[0]"
           :icon="program[1]"
-          @minimizeWindow="minimizeWindow(program[0])"
+          @minimizeWindow="minimizeWindow"
         />
       </div>
       <Clock />

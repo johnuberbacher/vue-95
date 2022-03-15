@@ -4,40 +4,16 @@
     :class="{ fullscreenMode: fullscreenMode, crtMode: crtMode }"
   >
     <div>
-      <div
-        ref="desktop"
-        class="desktop"
-        v-on:click.stop="resetDesktopContextMenu"
-        @contextmenu.prevent="desktopContextMenu"
-      >
-        <div class="programs" ref="boundary">
-          <Window
-            v-bind:key="index"
-            v-for="(program, index) in programsOpen"
-            :title="program[0]"
-            :icon="program[1]"
-            :minimize="program[2]"
-            :boundary="this.$refs.boundary"
-            @closeProgram="closeProgram(program[0])"
-            @minimizeWindow="minimizeWindow(program[0])"
-          >
-            <component :is="program[1]"></component>
-          </Window>
-          <Program
-            v-for="(program, index) in programs"
-            v-bind:key="index"
-            :title="program[0]"
-            :icon="program[1]"
-            @openProgram="openProgram"
-          />
-        </div>
-        <DesktopContextMenu
-          v-if="this.desktopContextMenuActive"
-          :position="this.desktopContextMenuPosition"
-          @fullscreenMode="this.fullscreenMode = !this.fullscreenMode"
-          @crtMode="this.crtMode = !this.crtMode"
-        />
-      </div>
+      <Desktop
+        :programs="programs"
+        :programsOpen="programsOpen"
+        @openProgram="openProgram"
+        @closeProgram="closeProgram"
+        @minimizeWindow="minimizeWindow"
+        @resetDesktopContext="this.desktopStartMenuActive = false"
+        @fullscreenMode="toggleFullscreenMoode"
+        @crtMode="toggleCrtMode"
+      />
       <Taskbar
         :programs="programs"
         :programsOpen="programsOpen"
@@ -48,23 +24,23 @@
   </div>
 </template>
 <script>
-import Program from "./desktop/programs/Program.vue";
-import DesktopContextMenu from "./desktop/DesktopContextMenu.vue";
+import Desktop from "./desktop/Desktop.vue";
 import Taskbar from "./taskbar/Taskbar.vue";
-import Window from "./windows/Window.vue";
-import Internet from "./windows/Internet.vue";
-import Notepad from "./windows/Notepad.vue";
 export default {
   name: "Main",
   props: {
     msg: String,
   },
+  components: {
+    Desktop,
+    Taskbar,
+  },
   data() {
     return {
-      desktopContextMenuActive: false,
+      fullscreenMode: false,
+      crtMode: true,
       desktopStartMenuActive: false,
-      desktopVolumeMenuActive: false,
-      desktopContextMenuPosition: [0, 0],
+      programsOpen: [["My Computer", "MyComputer", true]],
       programs: [
         ["My Computer", "MyComputer", true],
         ["My Documents", "Documents", true],
@@ -73,18 +49,7 @@ export default {
         ["Paint", "Paint", true],
         ["Recycle Bin", "RecycleBin", true],
       ],
-      programsOpen: [],
-      fullscreenMode: false,
-      crtMode: true,
     };
-  },
-  components: {
-    Program,
-    DesktopContextMenu,
-    Taskbar,
-    Window,
-    Notepad,
-    Internet,
   },
   methods: {
     openProgram(programTitle, programIcon) {
@@ -94,10 +59,8 @@ export default {
         this.programsOpen.push([programTitle, programIcon, true]);
       }
     },
-    closeProgram(program) {
-      for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == program) this.programsOpen.splice(i, 1);
-      }
+    closeProgram(programTitle) {
+      this.programsOpen.splice(programTitle, 1);
     },
     minimizeWindow(program) {
       for (let i = 0; i < this.programsOpen.length; i++) {
@@ -105,26 +68,11 @@ export default {
           this.programsOpen[i][2] = !this.programsOpen[i][2];
       }
     },
-    minimizeProgram(program) {
-      console.log("here");
-      for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == program)
-          this.programsOpen[i][2] = !this.programsOpen[i][2];
-      }
+    toggleFullscreenMoode() {
+      this.fullscreenMode = !this.fullscreenMode;
     },
-    resetDesktopContextMenu() {
-      this.desktopContextMenuActive = false;
-      this.desktopStartMenuActive = false;
-      this.desktopVolumeMenuActive = false;
-    },
-    desktopContextMenu(e) {
-      console.log(this.$refs.desktop.style.marginLeft);
-      e.preventDefault();
-      this.desktopContextMenuPosition[0] =
-        e.pageX - this.$refs.desktop.getBoundingClientRect().left;
-      this.desktopContextMenuPosition[1] =
-        e.pageY - this.$refs.desktop.getBoundingClientRect().top;
-      this.desktopContextMenuActive = true;
+    toggleCrtMode() {
+      this.crtMode = !this.crtMode;
     },
   },
 };
@@ -259,26 +207,6 @@ export default {
     align-items: stretch;
     justify-content: stretch;
     flex-direction: column;
-
-    .desktop {
-      width: 100%;
-      height: 100%;
-      padding: 0;
-      position: relative;
-      background-color: #008080;
-      .programs {
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        align-items: flex-start;
-        align-content: flex-start;
-        @media (min-width: 992px) {
-          flex-direction: column;
-        }
-      }
-    }
   }
 }
 </style>
