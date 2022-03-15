@@ -1,6 +1,8 @@
 <template>
-  <div class="container" 
-    :class="{ fullscreenMode: fullscreenMode, crtMode: crtMode, }">
+  <div
+    class="container"
+    :class="{ fullscreenMode: fullscreenMode, crtMode: crtMode }"
+  >
     <div>
       <div
         ref="desktop"
@@ -128,23 +130,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-$cursor-arrow: url("../assets/cursor/arrow.png"), default;
-$cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
-
-@font-face {
-  font-family: "W95A";
-  src: url("../assets/font/W95A.woff2") format("woff2"),
-    url("../assets/font/W95A.woff") format("woff"),
-    url("../assets/font/W95A.otf") format("otf");
-}
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
-}
-* {
   font-family: "W95A";
   font-smooth: never;
   -webkit-font-smoothing: none;
@@ -221,40 +211,43 @@ $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
   position: relative;
   overflow: hidden;
   &.crtMode {
-  &:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(18, 16, 16, 0.1);
-    opacity: 0;
-    z-index: 30;
-    pointer-events: none;
-    animation: flicker 0.15s infinite;
-  }
-  &:before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
-      linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 0.1),
-        rgba(0, 255, 0, 0.1),
-        rgba(0, 0, 255, 0.1)
-      );
-    z-index: 30;
-    box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
-    background-size: 100% 3px, 3px 100%;
-    pointer-events: none;
-  }
+    &:after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(18, 16, 16, 0.1);
+      opacity: 0;
+      z-index: 30;
+      pointer-events: none;
+      animation: flicker 0.15s infinite;
+    }
+    &:before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: linear-gradient(
+          rgba(18, 16, 16, 0) 50%,
+          rgba(0, 0, 0, 0.1) 50%
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 0, 0, 0.1),
+          rgba(0, 255, 0, 0.1),
+          rgba(0, 0, 255, 0.1)
+        );
+      z-index: 30;
+      box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
+      background-size: 100% 3px, 3px 100%;
+      pointer-events: none;
+    }
   }
   &.fullscreenMode {
     max-width: 100%;
@@ -266,65 +259,26 @@ $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
     align-items: stretch;
     justify-content: stretch;
     flex-direction: column;
-  }
-}
 
-.programs {
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
-  .child-class {
-    width: auto;
-    @media (min-width: 992px) {
+    .desktop {
       width: 100%;
+      height: 100%;
+      padding: 0;
+      position: relative;
+      background-color: #008080;
+      .programs {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+        align-content: flex-start;
+        @media (min-width: 992px) {
+          flex-direction: column;
+        }
+      }
     }
   }
-}
-
-/********************************** */
-
-.programs {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-@media (min-width: 992px) {
-  .programs {
-    flex-direction: row;
-  }
-}
-.child-class {
-  width: auto;
-}
-@media (min-width: 992px) {
-  .child-class {
-    width: 100%;
-  }
-}
-
-.programs {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  @media (min-width: 992px) {
-    width: 100%;
-  }
-}
-.desktop {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  position: relative;
-  background-color: #008080;
 }
 </style>

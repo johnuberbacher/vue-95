@@ -1,5 +1,10 @@
 $highlightV95: #000080;
-
+@font-face {
+  font-family: "W95A";
+  src: url("~@/assets/font/W95A.woff2") format("woff2"),
+    url("~@/assets/font/W95A.woff") format("woff"),
+    url("~@/assets/font/W95A.otf") format("otf");
+}
 @mixin v95() {
     background: rgb(198, 198, 198);
     border-width: 1px;
