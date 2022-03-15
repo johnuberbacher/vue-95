@@ -8,7 +8,7 @@
   >
     <div class="link"><span>Arrange Icons</span> <span>›</span></div>
     <div class="link">Line Up Icons</div>
-    <div class="link">Disable CRT/Flicker</div>
+    <div v-on:click="this.$emit('crtMode')" class="link">Disable&nbsp;CRT/Flicker</div>
     <div v-on:click="this.$emit('fullscreenMode')" class="link">Fullscreen Mode</div>
     <div class="divider"></div>
     <div class="link"><span>New</span> <span>›</span></div>

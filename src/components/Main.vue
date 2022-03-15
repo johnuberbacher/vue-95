@@ -1,6 +1,6 @@
 <template>
   <div class="container" 
-    :class="{ fullscreenMode: fullscreenMode }">
+    :class="{ fullscreenMode: fullscreenMode, crtMode: crtMode, }">
     <div>
       <div
         ref="desktop"
@@ -33,6 +33,7 @@
           v-if="this.desktopContextMenuActive"
           :position="this.desktopContextMenuPosition"
           @fullscreenMode="this.fullscreenMode = !this.fullscreenMode"
+          @crtMode="this.crtMode = !this.crtMode"
         />
       </div>
       <Taskbar
@@ -72,6 +73,7 @@ export default {
       ],
       programsOpen: [],
       fullscreenMode: false,
+      crtMode: true,
     };
   },
   components: {
@@ -218,10 +220,7 @@ $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
   height: 480px;
   position: relative;
   overflow: hidden;
-  &.fullscreenMode {
-    max-width: 100%;
-    height: 100%;
-  }
+  &.crtMode {
   &:after {
     content: " ";
     display: block;
@@ -255,6 +254,11 @@ $cursor-pointer: url("../assets/cursor/pointer.png"), pointer;
     box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
     background-size: 100% 3px, 3px 100%;
     pointer-events: none;
+  }
+  }
+  &.fullscreenMode {
+    max-width: 100%;
+    height: 100%;
   }
   > div {
     height: 100%;
