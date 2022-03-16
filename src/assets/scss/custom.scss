@@ -21,12 +21,20 @@
   }
   /* Up */
   ::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("~@/assets/icon/scroll_up.png");
+    background-position: center center;
+    background-size: 7px 4px;
+    background-repeat: no-repeat;
     &:active {
         @include v95Hover;
     }
   }
   /* Down */
   ::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("~@/assets/icon/scroll_down.png");
+    background-position: center center;
+    background-size: 7px 4px;
+    background-repeat: no-repeat;
     &:active {
         @include v95Hover;
     }
