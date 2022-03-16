@@ -6,7 +6,7 @@
       }"
       class="taskbar-audio"
     ></div>
-    <div v-on:click="this.clock">test{{ this.currentTime }}</div>
+    <div>{{ this.currentTime }}</div>
     <!--<div>{{ new Date().toLocaleDateString([], { dateStyle: "short" }) }}</div>-->
   </div>
 </template>
@@ -15,26 +15,11 @@ export default {
   name: "Clock",
   data() {
     return {
-      currentTime: "",
+      currentTime: new Date().toLocaleTimeString([], { timeStyle: "short" }),
     };
   },
   components: {},
   methods: {
-    clock() {
-      const d = new Date().toLocaleTimeString([], { timeStyle: "short" });
-      this.currentTime = d;
-    },
-    updateTime() {
-      setInterval(function () {
-        this.clock();
-      }, 1);
-    },
-    created() {
-     this.clock();
-    },
-    mounted() {
-     this.clock();
-    },
   },
 };
 </script>
