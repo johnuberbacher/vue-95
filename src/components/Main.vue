@@ -61,7 +61,10 @@ export default {
       }
     },
     closeProgram(programTitle) {
-      this.programsOpen.splice(programTitle, 1);
+      for (let i = 0; i < this.programsOpen.length; i++) {
+        if (this.programsOpen[i][0] == programTitle)
+          this.programsOpen.splice(i, 1);
+      }
     },
     minimizeWindow(program) {
       for (let i = 0; i < this.programsOpen.length; i++) {
