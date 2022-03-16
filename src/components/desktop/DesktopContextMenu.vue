@@ -36,6 +36,7 @@ export default {
   position: absolute;
   min-width: 122px;
   padding: 2px;
+  z-index: 10;
   user-select: none;
   .link {
     display: flex;

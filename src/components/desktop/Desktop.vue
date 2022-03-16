@@ -13,6 +13,7 @@
         :icon="program[1]"
         :minimize="program[2]"
         :boundary="this.$refs.boundary"
+        @openProgram="openProgram"
         @closeProgram="closeProgram"
         @minimizeWindow="minimizeWindow"
       >
@@ -37,6 +38,7 @@
 <script>
 import Window from "../windows/Window.vue";
 import Internet from "../windows/Internet.vue";
+import Folder from "../windows/Folder.vue";
 import Notepad from "../windows/Notepad.vue";
 import Program from "./programs/Program.vue";
 import DesktopContextMenu from "./DesktopContextMenu.vue";
@@ -47,6 +49,7 @@ export default {
     DesktopContextMenu,
     Window,
     Notepad,
+    Folder,
     Internet,
   },
   props: {

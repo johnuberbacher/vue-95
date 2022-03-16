@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     openProgram() {
+      console.table(this.title, this.icon);
       this.$emit("openProgram", this.title, this.icon);
     },
   },

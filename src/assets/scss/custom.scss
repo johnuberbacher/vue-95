@@ -1,0 +1,41 @@
+*::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+*::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+*::-webkit-scrollbar-thumb {
+    @include v95();
+    width: 16px;
+    height: 30px;
+    background-color: $backgroundGrayV95;
+}
+
+/* Buttons */
+::-webkit-scrollbar-button:single-button {
+    @include v95();
+    display: block;
+    height: 16px;
+    width: 16px;
+  }
+  /* Up */
+  ::-webkit-scrollbar-button:single-button:vertical:decrement {
+    background-image: url("~@/assets/icon/scroll_up.png");
+    background-position: center center;
+    background-size: 7px 4px;
+    background-repeat: no-repeat;
+    &:active {
+        @include v95Hover;
+    }
+  }
+  /* Down */
+  ::-webkit-scrollbar-button:single-button:vertical:increment {
+    background-image: url("~@/assets/icon/scroll_down.png");
+    background-position: center center;
+    background-size: 7px 4px;
+    background-repeat: no-repeat;
+    &:active {
+        @include v95Hover;
+    }
+  }
