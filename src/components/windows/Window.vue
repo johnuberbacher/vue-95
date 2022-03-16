@@ -1,4 +1,4 @@
-<template v-slot="{title}">
+<template>
   <div style="z-index: 2;"
     @mousedown="windowMouseDown($event)"
     v-if="minimize"
@@ -77,7 +77,7 @@ export default {
       }
     },
     windowMouseDown(event) {
-      let elmt = event.target.parentNode;
+      let elmt = event.target;
       let maxIndex = document.querySelectorAll('.window').length;
       this.zCycle(parseInt(elmt.style.zIndex));
       elmt.style.zIndex = maxIndex + 2;
@@ -87,10 +87,15 @@ export default {
       event.preventDefault();
     },
     mouseDown(event) {
+      // Dragging
       let elmt = event.target.parentNode;
       this.pointer.state = 'down';
       if (this.pointer.yDiff == 0) this.pointer.yDiff = (elmt.offsetTop - event.clientY);
       if (this.pointer.xDiff == 0) this.pointer.xDiff = (elmt.offsetLeft - event.clientX);
+      // Z CYCLE
+      let maxIndex = document.querySelectorAll('.window').length;
+      this.zCycle(parseInt(elmt.style.zIndex));
+      elmt.style.zIndex = maxIndex + 2;
     },
     mouseMove(event) {
       if (this.pointer.state == 'down') {
