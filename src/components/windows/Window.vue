@@ -1,5 +1,6 @@
 <template v-slot="{title}">
-  <div
+  <div style="z-index: 2;"
+    @mousedown="windowMouseDown($event)"
     v-if="minimize"
     class="window"
     :class="{ maximize: maximizeWindow }"
@@ -53,7 +54,7 @@ export default {
         xDiff: 0,
         yDiff: 0,
       },
-      maximizeWindow: false,
+      maximizeWindow: false
     };
   },
   props: {
@@ -62,7 +63,25 @@ export default {
     minimize: Boolean,
     boundary: Object,
   },
+  mounted: function() {
+    this.zCycle();
+  },
   methods: {
+    zCycle(zIndex) {
+      var programs = document.querySelectorAll('.window');
+      zIndex = zIndex || 2;
+      for (let i = 0; i < programs.length; i++) {
+        if (parseInt(programs[i].style.zIndex) > zIndex) {
+          programs[i].style.zIndex = parseInt(programs[i].style.zIndex) - 1;
+        }
+      }
+    },
+    windowMouseDown(event) {
+      let elmt = event.target.parentNode;
+      let maxIndex = document.querySelectorAll('.window').length;
+      this.zCycle(parseInt(elmt.style.zIndex));
+      elmt.style.zIndex = maxIndex + 2;
+    },
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
       event.preventDefault();
@@ -103,7 +122,7 @@ export default {
     },
     maximize() {
       this.maximizeWindow = !this.maximizeWindow;
-    },
+    }
   },
 };
 </script>
@@ -118,7 +137,6 @@ export default {
   left: 10%;
   min-height: 150px;
   min-width: 200px;
-  z-index: 2;
   padding: 2px;
   display: flex;
   flex-direction: column;
@@ -136,7 +154,6 @@ export default {
     right: 0 !important;
     bottom: 0 !important;
     top: 0 !important;
-    z-index: 2;
     resize: none !important;
     width: auto !important;
     height: auto !important;
