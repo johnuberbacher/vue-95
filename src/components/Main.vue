@@ -40,12 +40,13 @@ export default {
       fullscreenMode: false,
       crtMode: true,
       desktopStartMenuActive: false,
-      programsOpen: [["My Computer", "MyComputer", true]],
+      programsOpen: [],
       programs: [
         ["My Computer", "MyComputer", true],
         ["My Documents", "Documents", true],
         ["Internet", "Internet", true],
         ["Notepad", "Notepad", true],
+        ["Folder", "Folder", true],
         ["Paint", "Paint", true],
         ["Recycle Bin", "RecycleBin", true],
       ],
@@ -169,7 +170,7 @@ export default {
       right: 0;
       background: rgba(18, 16, 16, 0.1);
       opacity: 0;
-      z-index: 30;
+      z-index: 100;
       pointer-events: none;
       animation: flicker 0.15s infinite;
     }
@@ -191,7 +192,7 @@ export default {
           rgba(0, 255, 0, 0.1),
           rgba(0, 0, 255, 0.1)
         );
-      z-index: 30;
+      z-index: 100;
       box-shadow: inset 0 0 100px rgba(0, 0, 0, 1);
       background-size: 100% 3px, 3px 100%;
       pointer-events: none;
