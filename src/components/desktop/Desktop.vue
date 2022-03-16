@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 .desktop {
   width: 100%;
-  height: 100%;
+  height: 452px;
   padding: 0;
   position: relative;
   background-color: #008080;

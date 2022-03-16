@@ -200,6 +200,9 @@ export default {
   &.fullscreenMode {
     max-width: 100%;
     height: 100%;
+    .desktop {
+      height: 100%!important;
+    }
   }
   > div {
     height: 100%;

@@ -14,7 +14,7 @@
             <StartMenuProgram href="www.google.com" :title="'GitHub'" :icon="'GitHub'" />
             <div class="divider"></div>
             <StartMenuProgram
-              v-for="(program, index) in programs"
+              v-for="(program, index) in programs.slice(0,6)"
               v-bind:key="index"
               :title="program[0]"
               :icon="program[1]"
@@ -44,6 +44,7 @@
           @minimizeWindow="minimizeWindow"
         />
       </div>
+      <div class="divider"></div>
       <Clock />
     </div>
   </div>
