@@ -99,14 +99,11 @@ export default {
   .programs {
     height: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-start;
-    @media (min-width: 992px) {
-      flex-direction: column;
-    }
   }
 }
 </style>
