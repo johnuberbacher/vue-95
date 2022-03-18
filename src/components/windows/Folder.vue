@@ -5,8 +5,8 @@
         v-for="(file, index) in directory"
         v-bind:key="index"
         :title="file.fileName"
-        :icon="file.type"
-        @openProgram="openProgram(file.fileName, file.type)"
+        :icon="file.fileType"
+        @openProgram="openProgram"
       />
     </div>
   </div>
@@ -23,23 +23,29 @@ export default {
       directory: [
         {
           fileName: "Local Disk (C:)",
-          type: "Folder",
+          fileType: "Folder",
+          files: ["Desktop"],
         },
         {
           fileName: "Desktop",
-          type: "Folder",
+          fileType: "Folder",
+          files: ["MyDocuments", "AnotherFolder","Notepad"],
         },
         {
           fileName: "Notepad",
-          type: "Notepad",
+          fileType: "Notepad",
+        },
+        {
+          fileName: "My Documents",
+          fileType: "Folder",
+          files: ["ExampleFile", "ExampleFile","ExampleFile"],
         },
       ],
     };
   },
   methods: {
-    openProgram(programTitle, programIcon) {
-      console.log(programTitle, programTitle);
-      this.$emit("openProgram", programTitle, programIcon);
+    openProgram(fileName, fileType) {
+      this.$emit('openProgram', fileName, fileType)
     },
   },
 };
@@ -58,6 +64,12 @@ export default {
   .file-explorer {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
     .program {
       color: inherit;
       &:active {

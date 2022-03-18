@@ -5,7 +5,6 @@
         <div
           class="start-menu"
           v-if="this.activeStartMenu"
-          v-click-outside="onClickOutside"
         >
           <div>
             <span>Windows<span>95</span></span>
@@ -23,7 +22,8 @@
             <StartMenuProgram :title="'Shut Down...'" :icon="'Shutdown'" />
           </div>
         </div>
-        <div class="start" v-on:click="toggleStartMenu">
+        <div class="start" v-click-away="closeStartMenu"
+          v-on:click="toggleStartMenu">
           <div
             class="icon"
             :style="{
@@ -53,7 +53,6 @@
 import TaskbarProgram from "./TaskbarProgram.vue";
 import StartMenuProgram from "./StartMenuProgram.vue";
 import Clock from "./Clock.vue";
-import vClickOutside from "v-click-outside";
 export default {
   name: "Taskbar",
   data: function () {
@@ -61,37 +60,27 @@ export default {
       activeStartMenu: false,
     };
   },
-  directives: {
-    clickOutside: vClickOutside.directive,
-  },
   props: {
     programs: Object,
     programsOpen: Object,
-    desktopStartMenuActive: Boolean,
   },
   components: {
     TaskbarProgram,
     StartMenuProgram,
     Clock,
   },
-  mounted() {
-    this.activeStartMenu = this.desktopStartMenuActive;
-  },
   methods: {
     minimizeWindow(programTitle) {
       this.$emit("minimizeWindow", programTitle);
-    },
-    onClickOutside(event) {
-      console.log("Clicked outside. Event: ", event);
-      this.activeStartMenu = false;
     },
     toggleStartMenu() {
       console.log("toggling");
       this.activeStartMenu = !this.activeStartMenu;
       console.log(this.activeStartMenu);
     },
-    closeStartMenu() {
-      this.activeStartMenu = false;
+    closeStartMenu () {
+      console.log('CLICK AWAY')
+        this.activeStartMenu = false;
     },
   },
 };

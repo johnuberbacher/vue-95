@@ -42,8 +42,8 @@ export default {
       desktopStartMenuActive: false,
       programsOpen: [],
       programs: [
-        ["My Computer", "MyComputer", true],
-        ["My Documents", "Documents", true],
+        ["My Computer", "Folder", true],
+        ["My Documents", "Folder", true],
         ["Internet", "Internet", true],
         ["Notepad", "Notepad", true],
         ["Folder", "Folder", true],
@@ -54,6 +54,8 @@ export default {
   },
   methods: {
     openProgram(programTitle, programIcon) {
+      console.log("Title: " + programTitle);
+      console.log("Type:  " + programIcon);
       if (this.programsOpen.find(([title]) => title === programTitle)) {
         console.log("found");
       } else {
@@ -205,7 +207,7 @@ export default {
     max-width: 100%;
     height: 100%;
     .desktop {
-      height: 100%!important;
+      height: 100% !important;
     }
   }
   > div {
