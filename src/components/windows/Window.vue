@@ -2,7 +2,7 @@
   <div style="z-index: 2;"
     @mousedown="windowMouseDown($event)"
     v-if="minimize"
-    class="window"
+    class="window top-most"
     :class="{ maximize: maximizeWindow }"
   >
     <div
@@ -70,17 +70,28 @@ export default {
     zCycle(zIndex) {
       var programs = document.querySelectorAll('.window');
       zIndex = zIndex || 2;
+      // Cycle zIndex
       for (let i = 0; i < programs.length; i++) {
         if (parseInt(programs[i].style.zIndex) > zIndex) {
           programs[i].style.zIndex = parseInt(programs[i].style.zIndex) - 1;
         }
       }
+      var topMost = document.querySelectorAll('.top-most');
+      for (let i = 0; i < topMost.length; i++) {
+        if ((topMost.length > 1) && (i < topMost.length)) {
+          topMost[i].classList.remove('top-most');
+        }
+      }
+      return true;
     },
     windowMouseDown(event) {
       let elmt = event.target;
       let maxIndex = document.querySelectorAll('.window').length;
-      this.zCycle(parseInt(elmt.style.zIndex));
-      elmt.style.zIndex = maxIndex + 2;
+      // Z CYCLE
+      if (this.zCycle(parseInt(elmt.style.zIndex))) {
+        elmt.style.zIndex = maxIndex + 2;
+        elmt.classList.add('top-most');  
+      }
     },
     doubleClick(event) {
       this.maximizeWindow = !this.maximizeWindow;
@@ -94,8 +105,11 @@ export default {
       if (this.pointer.xDiff == 0) this.pointer.xDiff = (elmt.offsetLeft - event.clientX);
       // Z CYCLE
       let maxIndex = document.querySelectorAll('.window').length;
-      this.zCycle(parseInt(elmt.style.zIndex));
-      elmt.style.zIndex = maxIndex + 2;
+      if (this.zCycle(parseInt(elmt.style.zIndex))) {
+        elmt.style.zIndex = maxIndex + 2;
+        elmt.classList.add('top-most');
+        console.log(elmt);
+      }
     },
     mouseMove(event) {
       if (this.pointer.state == 'down') {
@@ -190,7 +204,7 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: $highlightV95;
+    background-color: #808080;
     padding: 0px 3px;
     user-select: none;  
       .title {
@@ -234,6 +248,11 @@ export default {
           box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset;
         }
       }
+    }
+  }
+  &.top-most {
+    .menu-bar {
+      background-color: $highlightV95;
     }
   }
 }
