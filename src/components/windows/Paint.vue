@@ -1,14 +1,45 @@
 <template>
   <div class="paint">
-    <div class="canvas-wrapper">
-      <div class="toolbar"></div>
-      <canvas
-        width="634"
-        height="359"
-        ref="canvas"
-        @mousemove="mouseMove"
-        @mousedown="mouseDown"
-      ></canvas>
+    <div class="paint-wrapper">
+      <div class="toolbar">
+        <div
+          v-for:="(stroke, index) in 6"
+          v-bind:key="index"
+          v-on:click="this.setStroke($event, index)"
+          :class="{ active: index + 1 === selectedStroke}"
+          class="stroke-selector"
+        >
+          <div class="stroke">
+            <span
+              v-bind:key="index"
+              v-bind:style="{
+                height: index + 5 + 'px',
+                width: index + 5 + 'px',
+                minHeight: index + 5 + 'px',
+                minWidth: index + 5 + 'px',
+              }"
+            ></span>
+          </div>
+        </div>
+        <div class="stroke-selector">
+          <div class="stroke">
+            <img
+              width="9"
+              height="9"
+              :src="require('@/assets/icon/close.png')"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="canvas-wrapper">
+        <canvas
+          width="634"
+          height="359"
+          ref="canvas"
+          @mousemove="mouseMove"
+          @mousedown="mouseDown"
+        ></canvas>
+      </div>
     </div>
     <div class="colors">
       <div class="selected-color">
@@ -48,6 +79,7 @@ export default {
       currX: 0,
       currY: 0,
       canvas: "",
+      selectedStroke: 1,
       selectedLeftColor: "000000",
       selectedRightColor: "FFFFFF",
       colors: [
@@ -86,9 +118,10 @@ export default {
     this.canvas = this.$refs.canvas.getContext("2d");
   },
   methods: {
+    setStroke(e, index) {
+      this.selectedStroke = index + 1;
+    },
     setLeftColor(e, color) {
-      e.preventDefault();
-      e.stopPropagation();
       this.selectedLeftColor = color;
     },
     setRightColor(e, color) {
@@ -113,7 +146,8 @@ export default {
       const newY = e.clientY - y;
 
       this.canvas.beginPath();
-      this.canvas.lineWidth = 1.5;
+      this.canvas.lineWidth = this.selectedStroke;
+      console.log(this.selectedStroke)
       this.canvas.moveTo(this.lastX, this.lastY);
       this.canvas.lineTo(newX, newY);
       if (e.buttons == 1) {
@@ -134,13 +168,54 @@ export default {
 </script>
 <style lang="scss" scoped>
 .paint {
-  overflow: initial;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  .canvas-wrapper {
-    @include v95Hover;
+  align-items: flex-start;
+  justify-content: stretch;
+  .paint-wrapper {
     height: 100%;
-    overflow: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-evenly;
+    overflow: hidden;
+    .canvas-wrapper {
+      @include v95Hover;
+      height: 100%;
+      width: 100%;
+      overflow: auto;
+    }
+  }
+  .toolbar {
+    @include v95Hover;
+    overflow: hidden;
+    width: 48px;
+    padding: 2px 2px 0px 2px;
+    .stroke-selector {
+      @include v95;
+      height: 24px;
+      width: 24px;
+      margin-top: 1px;
+      margin-bottom: 5px;
+      .stroke {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+          display: block;
+          border-radius: 100px;
+          background-color: black;
+        }
+      }
+      &:active,
+      &.active {
+        @include v95Hover;
+      }
+    }
   }
   .colors {
     padding-top: 2px;
@@ -159,16 +234,16 @@ export default {
     .color {
       margin: 1px 0px 0px 1px;
       &:nth-of-type(1) {
-          z-index: 2!important;
-          position: absolute;
-          left: 7.5px;
-          top: 7.5px;
+        z-index: 2 !important;
+        position: absolute;
+        left: 7px;
+        top: 7px;
       }
       &:nth-of-type(2) {
-          z-index: 1!important;
-          position: absolute;
-          left: 18px;
-          top: 18px;
+        z-index: 1 !important;
+        position: absolute;
+        left: 17px;
+        top: 17px;
       }
     }
   }
