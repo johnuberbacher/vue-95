@@ -10,14 +10,16 @@
         @openProgram="openProgram"
         @closeProgram="closeProgram"
         @minimizeWindow="minimizeWindow"
-        @resetDesktopContext="this.desktopStartMenuActive = false"
+        @resetDesktopContext="resetDesktopContext"
         @fullscreenMode="toggleFullscreenMoode"
         @crtMode="toggleCrtMode"
       />
       <Taskbar
         :programs="programs"
         :programsOpen="programsOpen"
-        :desktopStartMenuActive="this.desktopStartMenuActive"
+        :desktopStartMenuActive="desktopStartMenuActive"
+        @toggleTaskBar="toggleTaskBar"
+        @closeTaskBar="closeTaskBar"
         @minimizeWindow="minimizeWindow"
       />
     </div>
@@ -42,18 +44,20 @@ export default {
       desktopStartMenuActive: false,
       programsOpen: [],
       programs: [
-        ["My Computer", "MyComputer", true],
-        ["My Documents", "Documents", true],
+        ["My Computer", "Folder", true],
+        ["My Documents", "Folder", true],
         ["Internet", "Internet", true],
         ["Notepad", "Notepad", true],
         ["Folder", "Folder", true],
         ["Paint", "Paint", true],
-        ["Recycle Bin", "RecycleBin", true],
+        ["Recycle Bin", "Folder", true],
       ],
     };
   },
   methods: {
     openProgram(programTitle, programIcon) {
+      console.log("Loading Program:");
+      console.table([programTitle, programIcon]);
       if (this.programsOpen.find(([title]) => title === programTitle)) {
         console.log("found");
       } else {
@@ -71,6 +75,17 @@ export default {
         if (this.programsOpen[i][0] == program)
           this.programsOpen[i][2] = !this.programsOpen[i][2];
       }
+    },
+    resetDesktopContext() {
+      console.log("here!");
+      this.desktopStartMenuActive = false;
+      console.log(this.desktopStartMenuActive);
+    },
+    toggleTaskBar() {
+      this.desktopStartMenuActive = !this.desktopStartMenuActive;
+    },
+    closeTaskBar() {
+      this.desktopStartMenuActive = false;
     },
     toggleFullscreenMoode() {
       this.fullscreenMode = !this.fullscreenMode;
@@ -205,7 +220,7 @@ export default {
     max-width: 100%;
     height: 100%;
     .desktop {
-      height: 100%!important;
+      height: 100% !important;
     }
   }
   > div {

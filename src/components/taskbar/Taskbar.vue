@@ -1,20 +1,20 @@
 <template>
   <div class="taskbar">
     <div class="intro">
-      <div class="start-menu-wrapper">
-        <div
-          class="start-menu"
-          v-if="this.activeStartMenu"
-          v-click-outside="onClickOutside"
-        >
+      <div class="start-menu-wrapper" ref="startmenu">
+        <div class="start-menu" v-if="this.desktopStartMenuActive">
           <div>
             <span>Windows<span>95</span></span>
           </div>
           <div class="start-menu-program-wrapper">
-            <StartMenuProgram href="www.google.com" :title="'GitHub'" :icon="'GitHub'" />
+            <StartMenuProgram
+              href="www.google.com"
+              :title="'GitHub'"
+              :icon="'GitHub'"
+            />
             <div class="divider"></div>
             <StartMenuProgram
-              v-for="(program, index) in programs.slice(0,6)"
+              v-for="(program, index) in programs.slice(0, 6)"
               v-bind:key="index"
               :title="program[0]"
               :icon="program[1]"
@@ -23,7 +23,7 @@
             <StartMenuProgram :title="'Shut Down...'" :icon="'Shutdown'" />
           </div>
         </div>
-        <div class="start" v-on:click="toggleStartMenu">
+        <div class="start" v-on:click="toggleTaskBar">
           <div
             class="icon"
             :style="{
@@ -53,45 +53,30 @@
 import TaskbarProgram from "./TaskbarProgram.vue";
 import StartMenuProgram from "./StartMenuProgram.vue";
 import Clock from "./Clock.vue";
-import vClickOutside from "v-click-outside";
 export default {
   name: "Taskbar",
-  data: function () {
-    return {
-      activeStartMenu: false,
-    };
-  },
-  directives: {
-    clickOutside: vClickOutside.directive,
-  },
   props: {
+    desktopStartMenuActive: Boolean,
     programs: Object,
     programsOpen: Object,
-    desktopStartMenuActive: Boolean,
   },
   components: {
     TaskbarProgram,
     StartMenuProgram,
     Clock,
   },
-  mounted() {
-    this.activeStartMenu = this.desktopStartMenuActive;
-  },
   methods: {
     minimizeWindow(programTitle) {
       this.$emit("minimizeWindow", programTitle);
     },
-    onClickOutside(event) {
-      console.log("Clicked outside. Event: ", event);
-      this.activeStartMenu = false;
+    openProgram() {
+      this.$emit("openProgram", this.title, this.icon);
     },
-    toggleStartMenu() {
-      console.log("toggling");
-      this.activeStartMenu = !this.activeStartMenu;
-      console.log(this.activeStartMenu);
+    toggleTaskBar() {
+      this.$emit("toggleTaskBar");
     },
-    closeStartMenu() {
-      this.activeStartMenu = false;
+    closeTaskBar() {
+      this.$emit("closeTaskBar");
     },
   },
 };
@@ -104,7 +89,8 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 28px;
+  height: 29px;
+  z-index: 5;
   .intro {
     display: flex;
     flex-direction: row;

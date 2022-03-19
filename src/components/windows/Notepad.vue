@@ -19,6 +19,8 @@ export default {
     height: 100%;
     width: 100%;
     pointer-events: all;
+    box-shadow: none!important;
+    &:focus, &:active {}
   }
 }
 </style>

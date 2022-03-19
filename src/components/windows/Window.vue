@@ -1,6 +1,8 @@
 <template>
-  <div style="z-index: 2;"
+  <div
+    style="z-index: 2"
     @mousedown="windowMouseDown($event)"
+    v-on:click.right.stop="preventDefault($event)"
     v-if="minimize"
     class="window"
     :class="{ maximize: maximizeWindow }"
@@ -41,21 +43,34 @@
       <div>Test</div>
       <div>Test</div>
     </div>
-    <slot></slot>
+    <div class="loaded-program">
+      <component :is="loadedProgram" @openProgram="openProgram"></component>
+    </div>
   </div>
 </template>
 <script>
+import Notepad from "./Notepad.vue";
+import Paint from "./Paint.vue";
+import Internet from "./Internet.vue";
+import Folder from "./Folder.vue";
 export default {
   name: "Window",
   data() {
     return {
+      loadedProgram: this.icon,
       pointer: {
-        state: 'up',
+        state: "up",
         xDiff: 0,
         yDiff: 0,
       },
-      maximizeWindow: false
+      maximizeWindow: false,
     };
+  },
+  components: {
+    Notepad,
+    Folder,
+    Paint,
+    Internet,
   },
   props: {
     title: String,
@@ -63,12 +78,12 @@ export default {
     minimize: Boolean,
     boundary: Object,
   },
-  mounted: function() {
+  mounted: function () {
     this.zCycle();
   },
   methods: {
     zCycle(zIndex) {
-      var programs = document.querySelectorAll('.window');
+      var programs = document.querySelectorAll(".window");
       zIndex = zIndex || 2;
       for (let i = 0; i < programs.length; i++) {
         if (parseInt(programs[i].style.zIndex) > zIndex) {
@@ -78,7 +93,7 @@ export default {
     },
     windowMouseDown(event) {
       let elmt = event.target;
-      let maxIndex = document.querySelectorAll('.window').length;
+      let maxIndex = document.querySelectorAll(".window").length;
       this.zCycle(parseInt(elmt.style.zIndex));
       elmt.style.zIndex = maxIndex + 2;
     },
@@ -89,23 +104,25 @@ export default {
     mouseDown(event) {
       // Dragging
       let elmt = event.target.parentNode;
-      this.pointer.state = 'down';
-      if (this.pointer.yDiff == 0) this.pointer.yDiff = (elmt.offsetTop - event.clientY);
-      if (this.pointer.xDiff == 0) this.pointer.xDiff = (elmt.offsetLeft - event.clientX);
+      this.pointer.state = "down";
+      if (this.pointer.yDiff == 0)
+        this.pointer.yDiff = elmt.offsetTop - event.clientY;
+      if (this.pointer.xDiff == 0)
+        this.pointer.xDiff = elmt.offsetLeft - event.clientX;
       // Z CYCLE
-      let maxIndex = document.querySelectorAll('.window').length;
+      let maxIndex = document.querySelectorAll(".window").length;
       this.zCycle(parseInt(elmt.style.zIndex));
       elmt.style.zIndex = maxIndex + 2;
     },
     mouseMove(event) {
-      if (this.pointer.state == 'down') {
+      if (this.pointer.state == "down") {
         let elmt = event.target.parentNode;
-        elmt.style.top = (this.pointer.yDiff + event.clientY) + 'px';
-        elmt.style.left = (this.pointer.xDiff + event.clientX) + 'px';
+        elmt.style.top = this.pointer.yDiff + event.clientY + "px";
+        elmt.style.left = this.pointer.xDiff + event.clientX + "px";
       }
     },
     mouseLeave(event) {
-      if (this.pointer.state == 'down') {
+      if (this.pointer.state == "down") {
         this.mouseMove(event);
       } else {
         this.releaseWindow();
@@ -115,9 +132,12 @@ export default {
       this.releaseWindow();
     },
     releaseWindow() {
-      this.pointer.state = 'up';
+      this.pointer.state = "up";
       this.pointer.xDiff = 0;
       this.pointer.yDiff = 0;
+    },
+    openProgram(fileName, fileType) {
+      this.$emit("openProgram", fileName, fileType);
     },
     closeProgram() {
       this.$emit("closeProgram", this.title);
@@ -127,21 +147,25 @@ export default {
     },
     maximize() {
       this.maximizeWindow = !this.maximizeWindow;
-    }
+    },
+    preventDefault(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .window {
-  height: 50%;
-  width: 50%;
+  height: 70%;
+  width: 70%;
   position: absolute;
   resize: both;
   overflow: auto;
   top: 10%;
   left: 10%;
   min-height: 150px;
-  min-width: 200px;
+  min-width: 310px;
   padding: 2px;
   display: flex;
   flex-direction: column;
@@ -169,8 +193,8 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    user-select: none;  
-      > div {
+    user-select: none;
+    > div {
       cursor: default;
       padding: 1px 4px 0px 2px;
       display: flex;
@@ -192,8 +216,8 @@ export default {
     justify-content: space-between;
     background-color: $highlightV95;
     padding: 0px 3px;
-    user-select: none;  
-      .title {
+    user-select: none;
+    .title {
       padding: 2px 0px;
       display: flex;
       flex-direction: row;
@@ -234,6 +258,15 @@ export default {
           box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset;
         }
       }
+    }
+  }
+  .loaded-program {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    > div {
+      height: 100%;
+      width: 100%;
     }
   }
 }
