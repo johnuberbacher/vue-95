@@ -39,3 +39,23 @@
         @include v95Hover;
     }
 }
+/* Left */
+::-webkit-scrollbar-button:single-button:horizontal:decrement {
+    background-image: url("~@/assets/icon/scroll_left.png");
+    background-position: center center;
+    background-size: 4px 7px;
+    background-repeat: no-repeat;
+    &:active {
+        @include v95Hover;
+    }
+}
+/* Right */
+::-webkit-scrollbar-button:single-button:horizontal:increment {
+    background-image: url("~@/assets/icon/scroll_right.png");
+    background-position: center center;
+    background-size: 4px 7px;
+    background-repeat: no-repeat;
+    &:active {
+        @include v95Hover;
+    }
+}
