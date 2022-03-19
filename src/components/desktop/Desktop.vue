@@ -2,15 +2,15 @@
   <div
     ref="desktop"
     class="desktop"
-    v-on:click.stop="resetDesktopContextMenu"
-    @contextmenu.prevent="desktopContextMenu"
+    v-on:click.left="resetDesktopContextMenu"
+    v-on:click.right="desktopContextMenu"
   >
     <div class="programs" ref="boundary">
       <Window
         v-bind:key="index"
         v-for="(program, index) in programsOpen"
         :title="program[0]"
-        :icon="program[1]"
+        :icon="program[0].replace(/ /g, '')"
         :minimize="program[2]"
         :boundary="this.$refs.boundary"
         @openProgram="openProgram"
@@ -23,7 +23,7 @@
         v-for="(program, index) in programs"
         v-bind:key="index"
         :title="program[0]"
-        :icon="program[1]"
+        :icon="program[0].replace(/ /g, '')"
         @openProgram="openProgram"
       />
     </div>
@@ -79,7 +79,9 @@ export default {
       this.desktopVolumeMenuActive = false;
     },
     desktopContextMenu(e) {
-      e.preventDefault();
+      e.preventDefault()
+      e.stopPropagation()
+      this.$emit("resetDesktopContext");
       this.desktopContextMenuPosition[0] =
         e.pageX - this.$refs.desktop.getBoundingClientRect().left;
       this.desktopContextMenuPosition[1] =

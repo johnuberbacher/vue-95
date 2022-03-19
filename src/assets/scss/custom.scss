@@ -11,15 +11,15 @@
     height: 30px;
     background-color: $backgroundGrayV95;
 }
-
+::-webkit-scrollbar-corner {background-color: transparent;}
 /* Buttons */ 
 ::-webkit-scrollbar-button:single-button {
     @include v95();
     display: block;
     height: 16px;
     width: 16px;
-  }
-  /* Up */
+}
+/* Up */
 ::-webkit-scrollbar-button:single-button:vertical:decrement {
     background-image: url("~@/assets/icon/scroll_up.png");
     background-position: center center;
@@ -28,8 +28,8 @@
     &:active {
         @include v95Hover;
     }
-  }
-  /* Down */
+}
+/* Down */
 ::-webkit-scrollbar-button:single-button:vertical:increment {
     background-image: url("~@/assets/icon/scroll_down.png");
     background-position: center center;
@@ -38,4 +38,4 @@
     &:active {
         @include v95Hover;
     }
-  }
+}

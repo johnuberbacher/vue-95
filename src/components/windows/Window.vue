@@ -2,6 +2,7 @@
   <div
     style="z-index: 2"
     @mousedown="windowMouseDown($event)"
+    v-on:click.right.stop="preventDefault($event)"
     v-if="minimize"
     class="window"
     :class="{ maximize: maximizeWindow }"
@@ -19,7 +20,7 @@
           class="icon"
           :style="{
             backgroundImage:
-              'url(' + require('@/assets/icon/' + title.replace(/ /g, '') + '.png') + ')',
+              'url(' + require('@/assets/icon/' + icon + '.png') + ')',
           }"
         ></span
         ><span>{{ title }}</span>
@@ -42,13 +43,16 @@
       <div>Test</div>
       <div>Test</div>
     </div>
-    <component :is="loadedProgram" @openProgram="openProgram"></component>
+    <div class="loaded-program">
+      <component :is="loadedProgram" @openProgram="openProgram"></component>
+    </div>
   </div>
 </template>
 <script>
 import Notepad from "./Notepad.vue";
-import Folder from "./Folder.vue";
+import Paint from "./Paint.vue";
 import Internet from "./Internet.vue";
+import Folder from "./Folder.vue";
 export default {
   name: "Window",
   data() {
@@ -65,6 +69,7 @@ export default {
   components: {
     Notepad,
     Folder,
+    Paint,
     Internet,
   },
   props: {
@@ -132,7 +137,7 @@ export default {
       this.pointer.yDiff = 0;
     },
     openProgram(fileName, fileType) {
-      this.$emit('openProgram', fileName, fileType)
+      this.$emit("openProgram", fileName, fileType);
     },
     closeProgram() {
       this.$emit("closeProgram", this.title);
@@ -143,20 +148,24 @@ export default {
     maximize() {
       this.maximizeWindow = !this.maximizeWindow;
     },
+    preventDefault(event) {
+      event.stopPropagation();
+      event.preventDefault();
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
 .window {
-  height: 50%;
-  width: 50%;
+  height: 70%;
+  width: 70%;
   position: absolute;
   resize: both;
   overflow: auto;
   top: 10%;
   left: 10%;
   min-height: 150px;
-  min-width: 200px;
+  min-width: 352px;
   padding: 2px;
   display: flex;
   flex-direction: column;
@@ -249,6 +258,15 @@ export default {
           box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset;
         }
       }
+    }
+  }
+  .loaded-program {
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+    > div {
+      height: 100%;
+      width: 100%;
     }
   }
 }
