@@ -165,7 +165,7 @@ export default {
   top: 10%;
   left: 10%;
   min-height: 150px;
-  min-width: 352px;
+  min-width: 310px;
   padding: 2px;
   display: flex;
   flex-direction: column;
