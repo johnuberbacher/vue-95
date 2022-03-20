@@ -5,7 +5,12 @@ export default [
     "MyComputer",
     "Folder",
     true,
-    [["Local Disk (C:)", "Folder", "Folder", true]],
+    [
+      ["3½ Floppy (A:)", "FloppyDrive", "Folder", true],
+      ["Local Disk (C:)", "Drive", "Folder", true],
+      ["(D:)", "DiskDrive", "Folder", true],
+      ["Control Panel", "Folder", "Folder", true],
+    ],
   ],
   ["My Documents", "MyDocuments", "Folder", true],
   ["Internet", "Internet", "Internet", true],

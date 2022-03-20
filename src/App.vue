@@ -37,6 +37,8 @@ body,
   background-color: #000000;
   width: 100%;
   height: 100%;
+  min-width: 720px;
+  min-height: 540px;
   font-weight: 300;
   font-size: 12px;
   overflow: hidden;

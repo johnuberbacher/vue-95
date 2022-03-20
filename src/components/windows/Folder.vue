@@ -17,7 +17,7 @@
       />
     </div>
     <div class="details-bar">
-      <div>{{ this.programsOpen.length }} object(s)</div>
+      <div>{{ (this.currentDirectory) ? this.currentDirectory.length : '0' }} object(s)</div>
     </div>
   </div>
 </template>
