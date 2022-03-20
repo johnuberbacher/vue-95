@@ -147,7 +147,6 @@ export default {
 
       this.canvas.beginPath();
       this.canvas.lineWidth = this.selectedStroke;
-      console.log(this.selectedStroke)
       this.canvas.moveTo(this.lastX, this.lastY);
       this.canvas.lineTo(newX, newY);
       if (e.buttons == 1) {

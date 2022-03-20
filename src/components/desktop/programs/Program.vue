@@ -4,23 +4,25 @@
       class="icon"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icon/' + icon + '.png') + ')',
+          'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
       }"
     ></span>
-    <span class="title">{{ title }}</span>
+    <span class="title">{{ fileName }}</span>
   </div>
 </template>
 <script>
 export default {
   name: "Program",
   props: {
-    title: String,
-    icon: String,
+    fileName: String,
+    fileIcon: String,
+    fileType: String,
+    files: Array,
     open: Boolean,
   },
   methods: {
     openProgram() {
-      this.$emit("openProgram", this.title, this.icon);
+      this.$emit("openProgram", this.fileName, this.fileIcon, this.fileType, this.files);
     },
   },
 };

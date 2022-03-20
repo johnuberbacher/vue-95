@@ -28,6 +28,7 @@
 <script>
 import Desktop from "./desktop/Desktop.vue";
 import Taskbar from "./taskbar/Taskbar.vue";
+import Directory from "../data/Directory.vue";
 export default {
   name: "Main",
   props: {
@@ -43,43 +44,30 @@ export default {
       crtMode: true,
       desktopStartMenuActive: false,
       programsOpen: [],
-      programs: [
-        ["My Computer", "Folder", true],
-        ["My Documents", "Folder", true],
-        ["Internet", "Internet", true],
-        ["Notepad", "Notepad", true],
-        ["Folder", "Folder", true],
-        ["Paint", "Paint", true],
-        ["Recycle Bin", "Folder", true],
-      ],
+      programs: Directory,
     };
   },
   methods: {
-    openProgram(programTitle, programIcon) {
-      console.log("Loading Program:");
-      console.table([programTitle, programIcon]);
-      if (this.programsOpen.find(([title]) => title === programTitle)) {
+    openProgram(fileName, fileIcon, fileType, files) {
+      if (this.programsOpen.find(([title]) => title === fileName)) {
         console.log("found");
       } else {
-        this.programsOpen.push([programTitle, programIcon, true]);
+        this.programsOpen.push([fileName, fileIcon, fileType, true, files]);
       }
     },
-    closeProgram(programTitle) {
+    closeProgram(fileName) {
       for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == programTitle)
-          this.programsOpen.splice(i, 1);
+        if (this.programsOpen[i][0] == fileName) this.programsOpen.splice(i, 1);
       }
     },
-    minimizeWindow(program) {
+    minimizeWindow(fileName) {
       for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == program)
-          this.programsOpen[i][2] = !this.programsOpen[i][2];
+        if (this.programsOpen[i][0] == fileName)
+          this.programsOpen[i][3] = !this.programsOpen[i][3];
       }
     },
     resetDesktopContext() {
-      console.log("here!");
       this.desktopStartMenuActive = false;
-      console.log(this.desktopStartMenuActive);
     },
     toggleTaskBar() {
       this.desktopStartMenuActive = !this.desktopStartMenuActive;

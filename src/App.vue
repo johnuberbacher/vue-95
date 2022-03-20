@@ -40,5 +40,10 @@ body,
   font-weight: 300;
   font-size: 12px;
   overflow: hidden;
+  background-image: url("~@/assets/img/crt.png");
+  background-size: 1030px 914px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: white;
 }
 </style>

@@ -14,8 +14,8 @@
 export default {
   name: "StartMenuProgram",
   props: {
-    title: String,
-    icon: String,
+    fileName: String,
+    fileIcon: String,
   },
 };
 </script>

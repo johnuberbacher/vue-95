@@ -9,18 +9,18 @@
           <div class="start-menu-program-wrapper">
             <StartMenuProgram
               href="www.google.com"
-              :title="'GitHub'"
-              :icon="'GitHub'"
+              :fileName="'GitHub'"
+              :fileIcon="'GitHub'"
             />
             <div class="divider"></div>
             <StartMenuProgram
               v-for="(program, index) in programs.slice(0, 6)"
               v-bind:key="index"
-              :title="program[0]"
-              :icon="program[1]"
+              :fileName="program[0]"
+              :fileIcon="program[1]"
             />
             <div class="divider"></div>
-            <StartMenuProgram :title="'Shut Down...'" :icon="'Shutdown'" />
+            <StartMenuProgram :fileName="'Shut Down...'" :fileIcon="'Shutdown'" />
           </div>
         </div>
         <div class="start" v-on:click="toggleTaskBar">
@@ -39,8 +39,8 @@
         <TaskbarProgram
           v-for="(program, index) in programsOpen"
           v-bind:key="index"
-          :title="program[0]"
-          :icon="program[1]"
+          :fileName="program[0]"
+          :fileIcon="program[1]"
           @minimizeWindow="minimizeWindow"
         />
       </div>
@@ -66,11 +66,11 @@ export default {
     Clock,
   },
   methods: {
-    minimizeWindow(programTitle) {
-      this.$emit("minimizeWindow", programTitle);
+    minimizeWindow(fileName) {
+      this.$emit("minimizeWindow", fileName);
     },
     openProgram() {
-      this.$emit("openProgram", this.title, this.icon);
+      this.$emit("openProgram", this.fileName, this.fileIcon, this.fileType, this.files);
     },
     toggleTaskBar() {
       this.$emit("toggleTaskBar");
