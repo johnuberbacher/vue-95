@@ -29,7 +29,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .program {
-  height: 74px;
+  height: 75px;
   width: 86px;
   display: flex;
   flex-direction: column;

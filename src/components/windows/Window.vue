@@ -45,6 +45,7 @@
         :fileType="fileType"
         :programsOpen="programsOpen"
         @openProgram="openProgram"
+        @closeProgram="closeProgram"
       ></component>
     </div>
   </div>
@@ -159,8 +160,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .window {
-  height: 70%;
-  width: 70%;
+  height: 60%;
+  width: 60%;
   position: absolute;
   resize: both;
   overflow: auto;

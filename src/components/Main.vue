@@ -19,6 +19,7 @@
         :programsOpen="programsOpen"
         :desktopStartMenuActive="desktopStartMenuActive"
         @toggleTaskBar="toggleTaskBar"
+        @openProgram="openProgram"
         @closeTaskBar="closeTaskBar"
         @minimizeWindow="minimizeWindow"
       />
@@ -45,6 +46,7 @@ export default {
       desktopStartMenuActive: false,
       programsOpen: [],
       programs: Directory,
+      savedFiles: [],
     };
   },
   methods: {
@@ -56,8 +58,18 @@ export default {
       }
     },
     closeProgram(fileName) {
+      console.log('here')
       for (let i = 0; i < this.programsOpen.length; i++) {
         if (this.programsOpen[i][0] == fileName) this.programsOpen.splice(i, 1);
+      }
+    },
+    saveFile(fileName, fileIcon, fileType) {
+      if (this.programsOpen.find(([title]) => title === fileName)) {
+        console.log("Cant save file/folder as a real program");
+      } if (this.savedFiles.find(([title]) => title === fileName)) { 
+        console.log("This saved file/filename already exists!");
+      } else {
+        this.savedFiles.push([fileName, fileIcon, fileType, true, []]);
       }
     },
     minimizeWindow(fileName) {

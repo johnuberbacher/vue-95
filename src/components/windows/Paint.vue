@@ -1,12 +1,21 @@
 <template>
   <div class="paint">
+    <div class="file-bar">
+      <div class="link">
+        File
+        <div class="submenu">
+          <div class="link">Save</div>
+          <div class="link">Exit</div>
+        </div>
+      </div>
+    </div>
     <div class="paint-wrapper">
       <div class="toolbar">
         <div
           v-for:="(stroke, index) in 6"
           v-bind:key="index"
           v-on:click="this.setStroke($event, index)"
-          :class="{ active: index + 1 === selectedStroke}"
+          :class="{ active: index + 1 === selectedStroke }"
           class="stroke-selector"
         >
           <div class="stroke">
@@ -172,6 +181,63 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   justify-content: stretch;
+  .file-bar {
+    background-color: rgba(191, 193, 192, 1);
+    padding: 2px 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    user-select: none;
+    .link {
+      cursor: default;
+      padding: 0px 4px 0px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 18px;
+      position: relative;
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 4px;
+        width: 6px;
+        height: 1px;
+        background: #000000;
+      }
+      &:hover,
+      &:active {
+        background-color: $highlightV95;
+        color: white;
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: 4px;
+          left: 4px;
+          width: 6px;
+          height: 1px;
+          background: #FFFFFF;
+        }
+        > .submenu {
+          display: block
+        }
+      }
+      .submenu {
+        @include v95;
+        color: initial;
+        position: absolute;
+        min-width: 122px;
+        top: 100%;
+        left: 0;
+        display: none;
+        padding: 2px;
+        z-index: 10;
+        user-select: none;
+        background-color: rgba(191, 193, 192, 1);
+      }
+    }
+  }
   .paint-wrapper {
     height: 100%;
     width: 100%;

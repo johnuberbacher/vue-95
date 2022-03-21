@@ -59,6 +59,7 @@ export default {
   props: {
     programs: Object,
     programsOpen: Object,
+    savedFiles: Object,
   },
   data() {
     return {
@@ -83,8 +84,8 @@ export default {
       this.desktopVolumeMenuActive = false;
     },
     desktopContextMenu(e) {
-      e.preventDefault()
-      e.stopPropagation()
+      e.preventDefault();
+      e.stopPropagation();
       this.$emit("resetDesktopContext");
       this.desktopContextMenuPosition[0] =
         e.pageX - this.$refs.desktop.getBoundingClientRect().left;

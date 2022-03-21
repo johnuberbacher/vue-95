@@ -7,14 +7,35 @@ export default [
     true,
     [
       ["3½ Floppy (A:)", "FloppyDrive", "Folder", true],
-      ["Local Disk (C:)", "Drive", "Folder", true],
+      [
+        "Local Disk (C:)",
+        "Drive",
+        "Folder",
+        true,
+        [
+          ["My Documents", "MyDocuments", "Folder", true],
+          ["My Pictures", "Folder", "Folder", true],
+        ],
+      ],
       ["(D:)", "DiskDrive", "Folder", true],
       ["Control Panel", "Folder", "Folder", true],
     ],
   ],
-  ["My Documents", "MyDocuments", "Folder", true],
   ["Internet", "Internet", "Internet", true],
   ["Notepad", "Notepad", "Notepad", true],
+  ["Paint", "Paint", "Paint", true],
+  [
+    "Programs",
+    "Programs",
+    "Folder",
+    true,
+    [
+      ["Internet", "Internet", "Internet", true],
+      ["Notepad", "Notepad", "Notepad", true],
+      ["Paint", "Paint", "Paint", true],
+    ],
+  ],
+  ["Recycle Bin", "RecycleBin", "Folder", true],
   [
     "Folder",
     "Folder",
@@ -38,10 +59,8 @@ export default [
           ],
         ],
       ],
-      ["Another Internet Link", "Internet", "Internet", true],
+      ["Internet Link", "Internet", "Internet", true],
     ],
   ],
-  ["Paint", "Paint", "Paint", true],
-  ["Recycle Bin", "RecycleBin", "Folder", true],
 ];
 </script>
