@@ -9,7 +9,7 @@ Recreation of the Windows 95 Operating System built with Vue 3 JS.
 
 
 ## Screenshots
-![Screenshot](https://i.imgur.com/7w7jHH3.png)
+![Screenshot](https://i.imgur.com/V4NXbsM.gif)
 
 
 ## Project setup
