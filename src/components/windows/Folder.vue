@@ -1,13 +1,22 @@
 <template>
   <div class="folder">
     <div class="file-explorer">
-      <Program 
-        v-for="(file, index) in directory"
+      <Program
+        v-for="(file, index) in currentDirectory"
         v-bind:key="index"
-        :title="file.fileName"
-        :icon="file.fileType"
+        :fileName="file[0]"
+        :fileIcon="file[1]"
+        :fileType="file[2]"
+        :files="file[4]"
+        :programsOpen="programsOpen"
         @openProgram="openProgram"
       />
+    </div>
+    <div class="details-bar">
+      <div>
+        {{ this.currentDirectory ? this.currentDirectory.length : "0" }}
+        object(s)
+      </div>
     </div>
   </div>
 </template>
@@ -20,32 +29,36 @@ export default {
   },
   data() {
     return {
-      directory: [
-        {
-          fileName: "Local Disk (C:)",
-          fileType: "Folder",
-          files: ["Desktop"],
-        },
-        {
-          fileName: "Desktop",
-          fileType: "Folder",
-          files: ["MyDocuments", "AnotherFolder","Notepad"],
-        },
-        {
-          fileName: "Notepad",
-          fileType: "Notepad",
-        },
-        {
-          fileName: "My Documents",
-          fileType: "Folder",
-          files: ["ExampleFile", "ExampleFile","ExampleFile"],
-        },
-      ],
+      currentDirectory: [],
     };
   },
+  props: {
+    fileName: String,
+    fileIcon: String,
+    fileType: String,
+    files: Array,
+    programsOpen: Array,
+  },
+  created() {
+    this.loadDirectory(this.programsOpen, this.fileName);
+  },
   methods: {
-    openProgram(fileName, fileType) {
-      this.$emit('openProgram', fileName, fileType)
+    loadDirectory(searchDirectory, fileSearch) {
+      let filteredResult = searchDirectory
+        .filter((row) => row[0] === fileSearch)
+        .map((row) => row);
+      this.currentDirectory = filteredResult[0][4];
+    },
+    openProgram(fileName, fileIcon, fileType, files) {
+      this.$emit("openProgram", fileName, fileIcon, fileType, files);
+      /*  if (fileType === "Folder") {
+        let filteredResult = this.currentDirectory
+          .filter((row) => row[0] === fileName)
+          .map((row) => row);
+        this.currentDirectory = filteredResult[0][4];
+      } else {
+        this.$emit("openProgram", fileName, fileIcon, fileType, files);
+      }*/
     },
   },
 };
@@ -55,12 +68,76 @@ export default {
   height: 100%;
   width: 100%;
   overflow: auto;
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgb(10, 10, 10) rgb(254, 254, 254) rgb(254, 254, 254)
-    rgb(10, 10, 10);
-  box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset;
-  background: white;
+  display: flex;
+  flex-direction: column;
+  .file-bar {
+    background-color: rgba(191, 193, 192, 1);
+    padding: 2px 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    user-select: none;
+    .link {
+      cursor: default;
+      padding: 0px 4px 0px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      height: 18px;
+      position: relative;
+      &:after {
+        content: "";
+        position: absolute;
+        bottom: 4px;
+        left: 4px;
+        width: 6px;
+        height: 1px;
+        background: #000000;
+      }
+      &:hover,
+      &:active {
+        background-color: $highlightV95;
+        color: white;
+        &:after {
+          content: "";
+          position: absolute;
+          bottom: 4px;
+          left: 4px;
+          width: 6px;
+          height: 1px;
+          background: #ffffff;
+        }
+        > .submenu {
+          display: block;
+        }
+      }
+      .submenu {
+        @include v95;
+        color: initial;
+        position: absolute;
+        min-width: 122px;
+        top: 100%;
+        left: 0;
+        display: none;
+        padding: 2px;
+        z-index: 10;
+        user-select: none;
+        background-color: rgba(191, 193, 192, 1);
+      }
+    }
+  }
+  .details-bar {
+    @include v95Hover;
+    background-color: rgba(191, 193, 192, 1);
+    padding: 4px 2px 2px 2px;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    user-select: none;
+  }
   .file-explorer {
     width: 100%;
     height: 100%;
@@ -70,6 +147,9 @@ export default {
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-start;
+    overflow: auto;
+    @include v95Hover;
+    background-color: white;
     .program {
       color: inherit;
       &:active {

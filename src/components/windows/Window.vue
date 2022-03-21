@@ -20,10 +20,10 @@
           class="icon"
           :style="{
             backgroundImage:
-              'url(' + require('@/assets/icon/' + icon + '.png') + ')',
+              'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
           }"
         ></span
-        ><span>{{ title }}</span>
+        ><span>{{ fileName }}</span>
       </div>
       <div class="actions">
         <div v-on:click="minimizeWindow()" @mouseleave="releaseWindow()">
@@ -37,14 +37,16 @@
         </div>
       </div>
     </div>
-    <div class="file-bar">
-      <div>File</div>
-      <div>Edit</div>
-      <div>Test</div>
-      <div>Test</div>
-    </div>
     <div class="loaded-program">
-      <component :is="loadedProgram" @openProgram="openProgram"></component>
+      <component
+        :is="loadedProgram"
+        :fileName="fileName"
+        :fileIcon="fileIcon"
+        :fileType="fileType"
+        :programsOpen="programsOpen"
+        @openProgram="openProgram"
+        @closeProgram="closeProgram"
+      ></component>
     </div>
   </div>
 </template>
@@ -52,12 +54,14 @@
 import Notepad from "./Notepad.vue";
 import Paint from "./Paint.vue";
 import Internet from "./Internet.vue";
+import AOL from "./AOL.vue";
+import Dialog from "./Dialog.vue";
 import Folder from "./Folder.vue";
 export default {
   name: "Window",
   data() {
     return {
-      loadedProgram: this.icon,
+      loadedProgram: this.fileType,
       pointer: {
         state: "up",
         xDiff: 0,
@@ -71,12 +75,15 @@ export default {
     Folder,
     Paint,
     Internet,
+    AOL,
+    Dialog,
   },
   props: {
-    title: String,
-    icon: String,
+    fileName: String,
+    fileIcon: String,
+    fileType: String,
     minimize: Boolean,
-    boundary: Object,
+    programsOpen: Array,
   },
   mounted: function () {
     this.zCycle();
@@ -136,14 +143,14 @@ export default {
       this.pointer.xDiff = 0;
       this.pointer.yDiff = 0;
     },
-    openProgram(fileName, fileType) {
-      this.$emit("openProgram", fileName, fileType);
+    openProgram(fileName, fileIcon, fileType, files) {
+      this.$emit("openProgram", fileName, fileIcon, fileType, files);
     },
     closeProgram() {
-      this.$emit("closeProgram", this.title);
+      this.$emit("closeProgram", this.fileName);
     },
     minimizeWindow() {
-      this.$emit("minimizeWindow", this.title);
+      this.$emit("minimizeWindow", this.fileName);
     },
     maximize() {
       this.maximizeWindow = !this.maximizeWindow;
@@ -157,8 +164,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .window {
-  height: 70%;
-  width: 70%;
+  height: 60%;
+  width: 60%;
   position: absolute;
   resize: both;
   overflow: auto;
@@ -186,27 +193,6 @@ export default {
     resize: none !important;
     width: auto !important;
     height: auto !important;
-  }
-  .file-bar {
-    padding: 2px 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    user-select: none;
-    > div {
-      cursor: default;
-      padding: 1px 4px 0px 2px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      height: 16px;
-      &:hover,
-      &:active {
-        background-color: $highlightV95;
-        color: white;
-      }
-    }
   }
   .menu-bar {
     height: 18px;

@@ -1,21 +1,28 @@
 <template>
-  <div class="start-menu-program">
+  <div class="start-menu-program" v-on:click="openProgram">
     <span
       class="icon"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icon/' + icon + '.png') + ')',
+          'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
       }"
     ></span>
-    <span>{{ title }}</span>
+    <span>{{ fileName }}</span>
   </div>
 </template>
 <script>
 export default {
   name: "StartMenuProgram",
   props: {
-    title: String,
-    icon: String,
+    fileName: String,
+    fileIcon: String,
+    fileType: String,
+    files: Array,
+  },
+  methods: {
+    openProgram() {
+      this.$emit("openProgram", this.fileName, this.fileIcon, this.fileType, this.files);
+    },
   },
 };
 </script>

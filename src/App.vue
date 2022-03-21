@@ -1,10 +1,8 @@
 <template>
   <Main />
 </template>
-
 <script>
 import Main from "./components/Main.vue";
-
 export default {
   name: "App",
   components: {
@@ -12,7 +10,6 @@ export default {
   },
 };
 </script>
-
 <style>
 * {
   box-sizing: border-box;
@@ -37,8 +34,16 @@ body,
   background-color: #000000;
   width: 100%;
   height: 100%;
+  min-width: 720px;
+  min-height: 540px;
   font-weight: 300;
   font-size: 12px;
   overflow: hidden;
+  background-image: url("~@/assets/img/crt.png");
+  background-size: 1030px 914px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: white;
+  position: relative;
 }
 </style>

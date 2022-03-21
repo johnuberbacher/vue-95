@@ -3,22 +3,22 @@
     <span
       class="icon"
       :style="{
-        backgroundImage: 'url(' + require('@/assets/icon/' + icon + '.png') + ')',
+        backgroundImage: 'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
       }"
     ></span>
-    <span class="title">{{title}}</span>
+    <span class="title">{{fileName}}</span>
   </div>
 </template>
 <script>
 export default {
   name: "TaskbarProgram",
   props: {
-    title: String,
-    icon: String,
+    fileName: String,
+    fileIcon: String,
   },
   methods: {
     minimizeWindow() {
-      this.$emit("minimizeWindow", this.title);
+      this.$emit("minimizeWindow", this.fileName);
     },
   }
 };

@@ -5,14 +5,16 @@
     v-on:click.left="resetDesktopContextMenu"
     v-on:click.right="desktopContextMenu"
   >
-    <div class="programs" ref="boundary">
+    <div class="programs">
       <Window
         v-bind:key="index"
         v-for="(program, index) in programsOpen"
-        :title="program[0]"
-        :icon="program[0].replace(/ /g, '')"
-        :minimize="program[2]"
-        :boundary="this.$refs.boundary"
+        :fileName="program[0]"
+        :fileIcon="program[1]"
+        :fileType="program[2]"
+        :files="program[4]"
+        :minimize="program[3]"
+        :programsOpen="programsOpen"
         @openProgram="openProgram"
         @closeProgram="closeProgram"
         @minimizeWindow="minimizeWindow"
@@ -22,8 +24,10 @@
       <Program
         v-for="(program, index) in programs"
         v-bind:key="index"
-        :title="program[0]"
-        :icon="program[0].replace(/ /g, '')"
+        :fileName="program[0]"
+        :fileIcon="program[1]"
+        :fileType="program[2]"
+        :files="program[4]"
         @openProgram="openProgram"
       />
     </div>
@@ -55,6 +59,7 @@ export default {
   props: {
     programs: Object,
     programsOpen: Object,
+    savedFiles: Object,
   },
   data() {
     return {
@@ -64,14 +69,14 @@ export default {
     };
   },
   methods: {
-    openProgram(programTitle, programIcon) {
-      this.$emit("openProgram", programTitle, programIcon);
+    openProgram(fileName, fileIcon, fileType, files) {
+      this.$emit("openProgram", fileName, fileIcon, fileType, files);
     },
-    closeProgram(programTitle) {
-      this.$emit("closeProgram", programTitle);
+    closeProgram(fileName) {
+      this.$emit("closeProgram", fileName);
     },
-    minimizeWindow(programTitle) {
-      this.$emit("minimizeWindow", programTitle);
+    minimizeWindow(fileName) {
+      this.$emit("minimizeWindow", fileName);
     },
     resetDesktopContextMenu() {
       this.$emit("resetDesktopContext");
@@ -79,8 +84,8 @@ export default {
       this.desktopVolumeMenuActive = false;
     },
     desktopContextMenu(e) {
-      e.preventDefault()
-      e.stopPropagation()
+      e.preventDefault();
+      e.stopPropagation();
       this.$emit("resetDesktopContext");
       this.desktopContextMenuPosition[0] =
         e.pageX - this.$refs.desktop.getBoundingClientRect().left;

@@ -9,18 +9,31 @@
           <div class="start-menu-program-wrapper">
             <StartMenuProgram
               href="www.google.com"
-              :title="'GitHub'"
-              :icon="'GitHub'"
+              :fileName="'GitHub'"
+              :fileIcon="'GitHub'"
             />
             <div class="divider"></div>
+            <!--<StartMenuProgram
+              :fileName="programs.slice(0, 1)[0][0]"
+              :fileIcon="programs.slice(0, 1)[0][1]"
+              :fileType="programs.slice(0, 1)[0][2]"
+              :files="programs.slice(0, 1)[0][4]"
+              @openProgram="openProgram"
+            />-->
             <StartMenuProgram
               v-for="(program, index) in programs.slice(0, 6)"
               v-bind:key="index"
-              :title="program[0]"
-              :icon="program[1]"
+              :fileName="program[0]"
+              :fileIcon="program[1]"
+              :fileType="program[2]"
+              :files="program[4]"
+              @openProgram="openProgram"
             />
             <div class="divider"></div>
-            <StartMenuProgram :title="'Shut Down...'" :icon="'Shutdown'" />
+            <StartMenuProgram
+              :fileName="'Shut Down...'"
+              :fileIcon="'Shutdown'"
+            />
           </div>
         </div>
         <div class="start" v-on:click="toggleTaskBar">
@@ -39,9 +52,10 @@
         <TaskbarProgram
           v-for="(program, index) in programsOpen"
           v-bind:key="index"
-          :title="program[0]"
-          :icon="program[1]"
+          :fileName="program[0]"
+          :fileIcon="program[1]"
           @minimizeWindow="minimizeWindow"
+          @openProgram="openProgram"
         />
       </div>
       <div class="divider"></div>
@@ -66,11 +80,13 @@ export default {
     Clock,
   },
   methods: {
-    minimizeWindow(programTitle) {
-      this.$emit("minimizeWindow", programTitle);
+    minimizeWindow(fileName) {
+      this.$emit("minimizeWindow", fileName);
+      this.$emit("closeTaskBar");
     },
-    openProgram() {
-      this.$emit("openProgram", this.title, this.icon);
+    openProgram(fileName, fileIcon, fileType, files) {
+      this.$emit("openProgram", fileName, fileIcon, fileType, files);
+      this.$emit("closeTaskBar");
     },
     toggleTaskBar() {
       this.$emit("toggleTaskBar");
