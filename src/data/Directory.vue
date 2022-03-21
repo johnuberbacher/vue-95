@@ -32,6 +32,7 @@ export default [
     [
       ["Internet", "Internet", "Internet", true],
       ["Notepad", "Notepad", "Notepad", true],
+      ["AOL", "AOL", "AOL", true],
       ["Paint", "Paint", "Paint", true],
     ],
   ],

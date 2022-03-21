@@ -1,10 +1,8 @@
 <template>
   <Main />
 </template>
-
 <script>
 import Main from "./components/Main.vue";
-
 export default {
   name: "App",
   components: {
@@ -12,7 +10,6 @@ export default {
   },
 };
 </script>
-
 <style>
 * {
   box-sizing: border-box;
@@ -47,5 +44,6 @@ body,
   background-repeat: no-repeat;
   background-position: center;
   background-color: white;
+  position: relative;
 }
 </style>

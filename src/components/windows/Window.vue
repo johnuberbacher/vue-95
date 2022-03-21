@@ -54,6 +54,8 @@
 import Notepad from "./Notepad.vue";
 import Paint from "./Paint.vue";
 import Internet from "./Internet.vue";
+import AOL from "./AOL.vue";
+import Dialog from "./Dialog.vue";
 import Folder from "./Folder.vue";
 export default {
   name: "Window",
@@ -73,6 +75,8 @@ export default {
     Folder,
     Paint,
     Internet,
+    AOL,
+    Dialog,
   },
   props: {
     fileName: String,
