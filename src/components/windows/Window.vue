@@ -45,6 +45,7 @@
         :fileType="fileType"
         :programsOpen="programsOpen"
         @openProgram="openProgram"
+        @saveFile="saveFile"
         @closeProgram="closeProgram"
       ></component>
     </div>
@@ -89,6 +90,9 @@ export default {
     this.zCycle();
   },
   methods: {
+    saveFile() {
+      console.log('saveFile!!!')
+    },
     zCycle(zIndex) {
       var programs = document.querySelectorAll(".window");
       zIndex = zIndex || 2;

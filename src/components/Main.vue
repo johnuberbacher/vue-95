@@ -13,6 +13,8 @@
         @resetDesktopContext="resetDesktopContext"
         @fullscreenMode="toggleFullscreenMoode"
         @crtMode="toggleCrtMode"
+        @saveFile="saveFile"
+        @createFile="createFile"
       />
       <Taskbar
         :programs="programs"
@@ -94,6 +96,9 @@ export default {
     toggleCrtMode() {
       this.crtMode = !this.crtMode;
     },
+    createFile() {
+      this.programs.push(["Folder", "Folder", "Folder", false])
+    }
   },
 };
 </script>

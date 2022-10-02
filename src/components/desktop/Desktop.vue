@@ -18,6 +18,7 @@
         @openProgram="openProgram"
         @closeProgram="closeProgram"
         @minimizeWindow="minimizeWindow"
+        @saveFile="saveFile"
       >
         <component :is="program[1]"></component>
       </Window>
@@ -36,6 +37,7 @@
       :position="this.desktopContextMenuPosition"
       @fullscreenMode="$emit('fullscreenMode')"
       @crtMode="$emit('crtMode')"
+      @createFile="$emit('createFile')"
     />
   </div>
 </template>
