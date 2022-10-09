@@ -1,27 +1,24 @@
 <template>
-  <div class="taskbar-program" v-on:click="minimizeWindow" >
+  <div class="taskbar-program" v-on:click="minimizeWindow">
     <span
       class="icon"
       :style="{
-        backgroundImage: 'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
+        backgroundImage:
+          'url(' + ('./src/assets/icon/' + fileIcon + '.png') + ')',
       }"
     ></span>
-    <span class="title">{{fileName}}</span>
+    <span class="title">{{ fileName }}</span>
   </div>
 </template>
-<script>
-export default {
-  name: "TaskbarProgram",
-  props: {
-    fileName: String,
-    fileIcon: String,
-  },
-  methods: {
-    minimizeWindow() {
-      this.$emit("minimizeWindow", this.fileName);
-    },
+<script setup>
+const props = defineProps(["fileName", "fileIcon", "openPrograms"]);
+
+function minimizeWindow() {
+  for (let i = 0; i < props.openPrograms.length; i++) {
+    if (props.openPrograms[i][0] == props.fileName)
+      props.openPrograms[i][3] = !props.openPrograms[i][3];
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .taskbar-program {

@@ -1,106 +1,39 @@
 <template>
   <div
     class="container"
-    :class="{ fullscreenMode: fullscreenMode, crtMode: crtMode }"
+    :class="{
+      fullscreenMode: interfaceStore.fullscreenMode,
+      crtMode: interfaceStore.crtMode,
+    }"
   >
     <div>
-      <Desktop
-        :programs="programs"
-        :programsOpen="programsOpen"
-        @openProgram="openProgram"
-        @closeProgram="closeProgram"
-        @minimizeWindow="minimizeWindow"
-        @resetDesktopContext="resetDesktopContext"
-        @fullscreenMode="toggleFullscreenMoode"
-        @crtMode="toggleCrtMode"
-        @saveFile="saveFile"
-        @createFile="createFile"
-      />
-      <Taskbar
-        :programs="programs"
-        :programsOpen="programsOpen"
-        :desktopStartMenuActive="desktopStartMenuActive"
-        @toggleTaskBar="toggleTaskBar"
-        @openProgram="openProgram"
-        @closeTaskBar="closeTaskBar"
-        @minimizeWindow="minimizeWindow"
-      />
+      <Desktop @resetDesktopContext="resetDesktopContext" />
+      <Taskbar :desktopStartMenuActive="desktopStartMenuActive" />
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import Desktop from "./desktop/Desktop.vue";
 import Taskbar from "./taskbar/Taskbar.vue";
-import Directory from "../data/Directory.vue";
-export default {
-  name: "Main",
-  props: {
-    msg: String,
-  },
-  components: {
-    Desktop,
-    Taskbar,
-  },
-  data() {
-    return {
-      fullscreenMode: false,
-      crtMode: true,
-      desktopStartMenuActive: false,
-      programsOpen: [],
-      programs: Directory,
-      savedFiles: [],
-    };
-  },
-  methods: {
-    openProgram(fileName, fileIcon, fileType, files) {
-      if (this.programsOpen.find(([title]) => title === fileName)) {
-        console.log("found");
-      } else {
-        this.programsOpen.push([fileName, fileIcon, fileType, true, files]);
-      }
-    },
-    closeProgram(fileName) {
-      console.log("here");
-      for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == fileName) this.programsOpen.splice(i, 1);
-      }
-    },
-    saveFile(fileName, fileIcon, fileType) {
-      if (this.programsOpen.find(([title]) => title === fileName)) {
-        console.log("Cant save file/folder as a real program");
-      }
-      if (this.savedFiles.find(([title]) => title === fileName)) {
-        console.log("This saved file/filename already exists!");
-      } else {
-        this.savedFiles.push([fileName, fileIcon, fileType, true, []]);
-      }
-    },
-    minimizeWindow(fileName) {
-      for (let i = 0; i < this.programsOpen.length; i++) {
-        if (this.programsOpen[i][0] == fileName)
-          this.programsOpen[i][3] = !this.programsOpen[i][3];
-      }
-    },
-    resetDesktopContext() {
-      this.desktopStartMenuActive = false;
-    },
-    toggleTaskBar() {
-      this.desktopStartMenuActive = !this.desktopStartMenuActive;
-    },
-    closeTaskBar() {
-      this.desktopStartMenuActive = false;
-    },
-    toggleFullscreenMoode() {
-      this.fullscreenMode = !this.fullscreenMode;
-    },
-    toggleCrtMode() {
-      this.crtMode = !this.crtMode;
-    },
-    createFile() {
-      this.programs.push(["Folder", "Folder", "Folder", false])
-    }
-  },
-};
+import { useInterfaceStore } from "../stores/interface";
+
+const interfaceStore = useInterfaceStore();
+const props = defineProps(["msg"]);
+
+function saveFile(fileName, fileIcon, fileType) {
+  if (this.programsOpen.find(([title]) => title === fileName)) {
+    console.log("Cant save file/folder as a real program");
+  }
+  if (this.savedFiles.find(([title]) => title === fileName)) {
+    console.log("This saved file/filename already exists!");
+  } else {
+    this.savedFiles.push([fileName, fileIcon, fileType, true, []]);
+  }
+}
+
+function resetDesktopContext() {
+  this.desktopStartMenuActive = false;
+}
 </script>
 <style lang="scss" scoped>
 *,

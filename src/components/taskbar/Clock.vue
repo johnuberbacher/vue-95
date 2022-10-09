@@ -2,7 +2,7 @@
   <div class="taskbar-clock">
     <div
       :style="{
-        backgroundImage: 'url(' + require('@/assets/icon/Volume.png') + ')',
+        backgroundImage: 'url(' + ('./src/assets/icon/Volume.png') + ')',
       }"
       class="taskbar-audio"
     ></div>

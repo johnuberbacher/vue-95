@@ -7,27 +7,27 @@
             class="icon"
             :style="{
               backgroundImage:
-                'url(' + require('@/assets/icon/Warning.png') + ')',
+                'url(' + ('./src/assets/icon/Warning.png') + ')',
             }"
           ></span
           ><span>Alert</span>
         </div>
         <div class="actions">
           <div>
-            <img :src="require('@/assets/icon/minimize.png')" />
+            <img :src="('./src/assets/icon/minimize.png')" />
           </div>
           <div>
-            <img :src="require('@/assets/icon/maximize.png')" />
+            <img :src="('./src/assets/icon/maximize.png')" />
           </div>
           <div>
-            <img :src="require('@/assets/icon/close.png')" />
+            <img :src="('./src/assets/icon/close.png')" />
           </div>
         </div>
       </div>
       <div class="dialog-body">
         <div class="content">
           <img
-            :src="require('@/assets/icon/Warning.png')"
+            :src="('./src/assets/icon/Warning.png')"
             width="32"
             height="32"
           />

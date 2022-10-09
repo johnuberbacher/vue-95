@@ -1,31 +1,36 @@
 <template>
-  <div class="program" @dblclick.stop="openProgram">
+  <div class="program" @dblclick.stop="openProgram()">
     <span
       class="icon"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
+          'url(' + ('./src/assets/icon/' + fileIcon + '.png') + ')',
       }"
     ></span>
-    <span class="title">{{ fileName }}</span>
+    <span class="title"  contenteditable="true" @dblclick.stop="renameFile()">{{ fileName }}</span>
   </div>
 </template>
-<script>
-export default {
-  name: "Program",
-  props: {
-    fileName: String,
-    fileIcon: String,
-    fileType: String,
-    files: Array,
-    open: Boolean,
-  },
-  methods: {
-    openProgram() {
-      this.$emit("openProgram", this.fileName, this.fileIcon, this.fileType, this.files);
-    },
-  },
-};
+<script setup>
+import { useDirectoryStore } from "../../../stores/directory";
+const directoryStore = useDirectoryStore();
+
+const props = defineProps(["fileName", "fileIcon", "fileType", "files"]);
+function renameFile() {
+  console.log('he')
+}
+function openProgram() {
+  if (directoryStore.openPrograms.find(([title]) => title === props.fileName)) {
+    console.log("This program already open");
+  } else {
+    directoryStore.openPrograms.push([
+      props.fileName,
+      props.fileIcon,
+      props.fileType,
+      true,
+      props.files,
+    ]);
+  }
+}
 </script>
 <style lang="scss" scoped>
 .program {
@@ -42,6 +47,11 @@ export default {
   .title {
     border: 1px solid transparent;
     cursor: default;
+    &:focus {
+      background-color: $highlightV95;
+      border: 1px dotted #939393;
+      outline: 0px solid transparent;
+    }
   }
   .icon {
     width: 32px;
@@ -51,6 +61,7 @@ export default {
     position: relative;
     display: block;
   }
+  &:focus,
   &:active {
     span.title {
       background-color: $highlightV95;

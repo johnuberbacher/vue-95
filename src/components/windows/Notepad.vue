@@ -4,8 +4,8 @@
       <div class="link">
         Fileopoo
         <div class="submenu">
-          <div class="link" v-on:click="this.$emit('saveFile')">Save</div>
-          <div class="link" v-on:click="closeProgram">Exit</div>
+          <div class="link">Save</div>
+          <div class="link">Exit</div>
         </div>
       </div>
       <a
@@ -20,19 +20,6 @@
     <textarea autofocus></textarea>
   </div>
 </template>
-<script>
-export default {
-  name: "Notepad",
-  props: {
-    fileName: String,
-  },
-  methods: {
-    closeProgram(fileName) {
-      this.$emit("closeProgram", fileName);
-    },
-  },
-};
-</script>
 <style lang="scss" scoped>
 .notepad {
   height: 100%;

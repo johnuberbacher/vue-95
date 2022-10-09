@@ -2,46 +2,46 @@
   <div class="taskbar">
     <div class="intro">
       <div class="start-menu-wrapper" ref="startmenu">
-        <div class="start-menu" v-if="this.desktopStartMenuActive">
+        <div class="start-menu" v-if="interfaceStore.desktopStartMenuActive">
           <div>
             <span>Windows<span>95</span></span>
           </div>
+
           <div class="start-menu-program-wrapper">
             <StartMenuProgram
               href="www.google.com"
               :fileName="'GitHub'"
               :fileIcon="'GitHub'"
             />
+
             <div class="divider"></div>
-            <!--<StartMenuProgram
-              :fileName="programs.slice(0, 1)[0][0]"
-              :fileIcon="programs.slice(0, 1)[0][1]"
-              :fileType="programs.slice(0, 1)[0][2]"
-              :files="programs.slice(0, 1)[0][4]"
-              @openProgram="openProgram"
-            />-->
+
             <StartMenuProgram
-              v-for="(program, index) in programs.slice(0, 6)"
+              v-for="(program, index) in directoryStore.activeDirectory.slice(
+                0,
+                6
+              )"
               v-bind:key="index"
               :fileName="program[0]"
               :fileIcon="program[1]"
               :fileType="program[2]"
               :files="program[4]"
-              @openProgram="openProgram"
+              :openPrograms="directoryStore.openPrograms"
             />
+
             <div class="divider"></div>
+
             <StartMenuProgram
               :fileName="'Shut Down...'"
               :fileIcon="'Shutdown'"
             />
           </div>
         </div>
-        <div class="start" v-on:click="toggleTaskBar">
+        <div class="start" v-on:click="toggleTaskBar()">
           <div
             class="icon"
             :style="{
-              backgroundImage:
-                'url(' + require('@/assets/icon/start.png') + ')',
+              backgroundImage: 'url(' + './src/assets/icon/start.png' + ')',
             }"
           ></div>
           Start
@@ -50,12 +50,12 @@
       <div class="divider"></div>
       <div class="taskbar-program-wrapper">
         <TaskbarProgram
-          v-for="(program, index) in programsOpen"
+          v-for="(program, index) in directoryStore.openPrograms"
           v-bind:key="index"
           :fileName="program[0]"
           :fileIcon="program[1]"
-          @minimizeWindow="minimizeWindow"
-          @openProgram="openProgram"
+          :openPrograms="directoryStore.openPrograms"
+          :desktopStartMenuActive="interfaceStore.desktopStartMenuActive"
         />
       </div>
       <div class="divider"></div>
@@ -63,39 +63,23 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import TaskbarProgram from "./TaskbarProgram.vue";
 import StartMenuProgram from "./StartMenuProgram.vue";
 import Clock from "./Clock.vue";
-export default {
-  name: "Taskbar",
-  props: {
-    desktopStartMenuActive: Boolean,
-    programs: Object,
-    programsOpen: Object,
-  },
-  components: {
-    TaskbarProgram,
-    StartMenuProgram,
-    Clock,
-  },
-  methods: {
-    minimizeWindow(fileName) {
-      this.$emit("minimizeWindow", fileName);
-      this.$emit("closeTaskBar");
-    },
-    openProgram(fileName, fileIcon, fileType, files) {
-      this.$emit("openProgram", fileName, fileIcon, fileType, files);
-      this.$emit("closeTaskBar");
-    },
-    toggleTaskBar() {
-      this.$emit("toggleTaskBar");
-    },
-    closeTaskBar() {
-      this.$emit("closeTaskBar");
-    },
-  },
-};
+
+import { useDirectoryStore } from "../../stores/directory";
+import { useInterfaceStore } from "../../stores/interface";
+const directoryStore = useDirectoryStore();
+const interfaceStore = useInterfaceStore();
+
+function toggleTaskBar() {
+  interfaceStore.desktopStartMenuActive =
+    !interfaceStore.desktopStartMenuActive;
+}
+function closeTaskBar() {
+  interfaceStore.desktopStartMenuActive = false;
+}
 </script>
 <style lang="scss" scoped>
 .taskbar {

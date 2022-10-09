@@ -1,30 +1,37 @@
 <template>
-  <div class="start-menu-program" v-on:click="openProgram">
+  <div class="start-menu-program" v-on:click="openProgram()">
     <span
       class="icon"
       :style="{
         backgroundImage:
-          'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
+          'url(' + ('./src/assets/icon/' + fileIcon + '.png') + ')',
       }"
     ></span>
     <span>{{ fileName }}</span>
   </div>
 </template>
-<script>
-export default {
-  name: "StartMenuProgram",
-  props: {
-    fileName: String,
-    fileIcon: String,
-    fileType: String,
-    files: Array,
-  },
-  methods: {
-    openProgram() {
-      this.$emit("openProgram", this.fileName, this.fileIcon, this.fileType, this.files);
-    },
-  },
-};
+<script setup>
+const props = defineProps([
+  "fileName",
+  "fileIcon",
+  "fileType",
+  "files",
+  "openPrograms",
+]);
+function openProgram() {
+  console.log(props.openPrograms);
+  if (props.openPrograms.find(([title]) => title === props.fileName)) {
+    console.log("found");
+  } else {
+    props.openPrograms.push([
+      props.fileName,
+      props.fileIcon,
+      props.fileType,
+      true,
+      props.files,
+    ]);
+  }
+}
 </script>
 <style lang="scss" scoped>
 .start-menu-program {

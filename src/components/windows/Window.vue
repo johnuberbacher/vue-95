@@ -20,151 +20,134 @@
           class="icon"
           :style="{
             backgroundImage:
-              'url(' + require('@/assets/icon/' + fileIcon + '.png') + ')',
+              'url(' + ('./src/assets/icon/' + fileIcon + '.png') + ')',
           }"
         ></span
         ><span>{{ fileName }}</span>
       </div>
       <div class="actions">
         <div v-on:click="minimizeWindow()" @mouseleave="releaseWindow()">
-          <img :src="require('@/assets/icon/minimize.png')" />
+          <img :src="'./src/assets/icon/minimize.png'" />
         </div>
         <div v-on:click="maximize()" @mouseleave="releaseWindow()">
-          <img :src="require('@/assets/icon/maximize.png')" />
+          <img :src="'./src/assets/icon/maximize.png'" />
         </div>
-        <div v-on:click="closeProgram" @mouseleave="releaseWindow()">
-          <img :src="require('@/assets/icon/close.png')" />
+        <div v-on:click="closeProgram()" @mouseleave="releaseWindow()">
+          <img :src="'./src/assets/icon/close.png'" />
         </div>
       </div>
     </div>
     <div class="loaded-program">
       <component
-        :is="loadedProgram"
+        :is="Paint"
         :fileName="fileName"
         :fileIcon="fileIcon"
         :fileType="fileType"
-        :programsOpen="programsOpen"
-        @openProgram="openProgram"
-        @saveFile="saveFile"
-        @closeProgram="closeProgram"
+        :openPrograms="directoryStore.openPrograms"
       ></component>
     </div>
   </div>
 </template>
-<script>
-import Notepad from "./Notepad.vue";
+<script setup>
+import { onMounted, computed, shallowRef  } from "vue";
+import { useDirectoryStore } from "../../stores/directory";
 import Paint from "./Paint.vue";
+import Notepad from "./Notepad.vue";
 import Internet from "./Internet.vue";
 import AOL from "./AOL.vue";
 import Dialog from "./Dialog.vue";
 import Folder from "./Folder.vue";
-export default {
-  name: "Window",
-  data() {
-    return {
-      loadedProgram: this.fileType,
-      pointer: {
-        state: "up",
-        xDiff: 0,
-        yDiff: 0,
-      },
-      maximizeWindow: false,
-    };
-  },
-  components: {
-    Notepad,
-    Folder,
-    Paint,
-    Internet,
-    AOL,
-    Dialog,
-  },
-  props: {
-    fileName: String,
-    fileIcon: String,
-    fileType: String,
-    minimize: Boolean,
-    programsOpen: Array,
-  },
-  mounted: function () {
-    this.zCycle();
-  },
-  methods: {
-    saveFile() {
-      console.log('saveFile!!!')
-    },
-    zCycle(zIndex) {
-      var programs = document.querySelectorAll(".window");
-      zIndex = zIndex || 2;
-      for (let i = 0; i < programs.length; i++) {
-        if (parseInt(programs[i].style.zIndex) > zIndex) {
-          programs[i].style.zIndex = parseInt(programs[i].style.zIndex) - 1;
-        }
-      }
-    },
-    windowMouseDown(event) {
-      let elmt = event.target;
-      let maxIndex = document.querySelectorAll(".window").length;
-      this.zCycle(parseInt(elmt.style.zIndex));
-      elmt.style.zIndex = maxIndex + 2;
-    },
-    doubleClick(event) {
-      this.maximizeWindow = !this.maximizeWindow;
-      event.preventDefault();
-    },
-    mouseDown(event) {
-      // Dragging
-      let elmt = event.target.parentNode;
-      this.pointer.state = "down";
-      if (this.pointer.yDiff == 0)
-        this.pointer.yDiff = elmt.offsetTop - event.clientY;
-      if (this.pointer.xDiff == 0)
-        this.pointer.xDiff = elmt.offsetLeft - event.clientX;
-      // Z CYCLE
-      let maxIndex = document.querySelectorAll(".window").length;
-      this.zCycle(parseInt(elmt.style.zIndex));
-      elmt.style.zIndex = maxIndex + 2;
-    },
-    mouseMove(event) {
-      if (this.pointer.state == "down") {
-        let elmt = event.target.parentNode;
-        elmt.style.top = this.pointer.yDiff + event.clientY + "px";
-        elmt.style.left = this.pointer.xDiff + event.clientX + "px";
-      }
-    },
-    mouseLeave(event) {
-      if (this.pointer.state == "down") {
-        this.mouseMove(event);
-      } else {
-        this.releaseWindow();
-      }
-    },
-    mouseUp() {
-      this.releaseWindow();
-    },
-    releaseWindow() {
-      this.pointer.state = "up";
-      this.pointer.xDiff = 0;
-      this.pointer.yDiff = 0;
-    },
-    openProgram(fileName, fileIcon, fileType, files) {
-      this.$emit("openProgram", fileName, fileIcon, fileType, files);
-    },
-    closeProgram() {
-      this.$emit("closeProgram", this.fileName);
-    },
-    minimizeWindow() {
-      this.$emit("minimizeWindow", this.fileName);
-    },
-    maximize() {
-      this.maximizeWindow = !this.maximizeWindow;
-    },
-    preventDefault(event) {
-      event.stopPropagation();
-      event.preventDefault();
-    },
-  },
+
+const directoryStore = useDirectoryStore();
+const props = defineProps(["fileName", "fileIcon", "fileType", "minimize"]);
+let maximizeWindow = false;
+let pointer = {
+  state: "up",
+  xDiff: 0,
+  yDiff: 0,
 };
+
+const activeComponent = shallowRef(props.fileType);
+
+onMounted(() => zCycle());
+
+function dynamicComponent() {
+  return props.fileType
+}
+
+function zCycle(zIndex) {
+  var programs = document.querySelectorAll(".window");
+  zIndex = zIndex || 2;
+  for (let i = 0; i < programs.length; i++) {
+    if (parseInt(programs[i].style.zIndex) > zIndex) {
+      programs[i].style.zIndex = parseInt(programs[i].style.zIndex) - 1;
+    }
+  }
+}
+function windowMouseDown(event) {
+  let elmt = event.target;
+  let maxIndex = document.querySelectorAll(".window").length;
+  this.zCycle(parseInt(elmt.style.zIndex));
+  elmt.style.zIndex = maxIndex + 2;
+}
+function doubleClick(event) {
+  this.maximizeWindow = !this.maximizeWindow;
+  event.preventDefault();
+}
+function mouseDown(event) {
+  // Dragging
+  let elmt = event.target.parentNode;
+  this.pointer.state = "down";
+  if (this.pointer.yDiff == 0)
+    this.pointer.yDiff = elmt.offsetTop - event.clientY;
+  if (this.pointer.xDiff == 0)
+    this.pointer.xDiff = elmt.offsetLeft - event.clientX;
+  // Z Cycle
+  let maxIndex = document.querySelectorAll(".window").length;
+  this.zCycle(parseInt(elmt.style.zIndex));
+  elmt.style.zIndex = maxIndex + 2;
+}
+function mouseMove(event) {
+  if (this.pointer.state == "down") {
+    let elmt = event.target.parentNode;
+    elmt.style.top = this.pointer.yDiff + event.clientY + "px";
+    elmt.style.left = this.pointer.xDiff + event.clientX + "px";
+  }
+}
+function mouseLeave(event) {
+  if (this.pointer.state == "down") {
+    this.mouseMove(event);
+  } else {
+    this.releaseWindow();
+  }
+}
+function mouseUp() {
+  this.releaseWindow();
+}
+function releaseWindow() {
+  this.pointer.state = "up";
+  this.pointer.xDiff = 0;
+  this.pointer.yDiff = 0;
+}
+function closeProgram() {
+  for (let i = 0; i < directoryStore.openPrograms.length; i++) {
+    if (directoryStore.openPrograms[i][0] == props.fileName)
+      directoryStore.openPrograms.splice(i, 1);
+  }
+}
+function minimizeWindow() {
+  for (let i = 0; i < directoryStore.openPrograms.length; i++) {
+    if (directoryStore.openPrograms[i][0] == props.fileName)
+      directoryStore.openPrograms[i][3] = !directoryStore.openPrograms[i][3];
+  }
+}
+function maximize() {
+  this.maximizeWindow = !this.maximizeWindow;
+}
+function preventDefault(event) {
+  event.stopPropagation();
+  event.preventDefault();
+}
 </script>
 <style lang="scss" scoped>
 .window {

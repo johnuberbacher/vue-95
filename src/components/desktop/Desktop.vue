@@ -6,97 +6,103 @@
     v-on:click.right="desktopContextMenu"
   >
     <div class="programs">
+      <!--Open Windows-->
       <Window
         v-bind:key="index"
-        v-for="(program, index) in programsOpen"
+        v-for="(program, index) in openPrograms"
         :fileName="program[0]"
         :fileIcon="program[1]"
         :fileType="program[2]"
         :files="program[4]"
         :minimize="program[3]"
-        :programsOpen="programsOpen"
-        @openProgram="openProgram"
-        @closeProgram="closeProgram"
-        @minimizeWindow="minimizeWindow"
-        @saveFile="saveFile"
-      >
-        <component :is="program[1]"></component>
-      </Window>
+      />
+
+      <!--Desktop Icons-->
       <Program
-        v-for="(program, index) in programs"
+        v-for="(program, index) in activeDirectory"
         v-bind:key="index"
         :fileName="program[0]"
         :fileIcon="program[1]"
         :fileType="program[2]"
         :files="program[4]"
-        @openProgram="openProgram"
+        v-on:click.right="programContextMenu"
       />
     </div>
+    <ContextMenu
+      v-if="interfaceStore.programContextMenuActive"
+      :position="interfaceStore.desktopContextMenuPosition"
+      :menuItems="[
+        ['link', 'function'],
+        ['link', 'function'],
+      ]"
+    />
     <DesktopContextMenu
-      v-if="this.desktopContextMenuActive"
-      :position="this.desktopContextMenuPosition"
-      @fullscreenMode="$emit('fullscreenMode')"
-      @crtMode="$emit('crtMode')"
-      @createFile="$emit('createFile')"
+      v-if="interfaceStore.desktopContextMenuActive"
+      :position="interfaceStore.desktopContextMenuPosition"
+      @crtMode="toggleCrtMode"
+      @fullscreenMode="toggleFullscreenMode"
+      @newTextDocument="newTextDocument"
+      @newFolder="newFolder"
     />
   </div>
 </template>
-<script>
+<script setup>
+import { ref, onMounted } from "vue";
 import Window from "../windows/Window.vue";
-import Internet from "../windows/Internet.vue";
-import Folder from "../windows/Folder.vue";
-import Notepad from "../windows/Notepad.vue";
 import Program from "./programs/Program.vue";
+import ContextMenu from "../ui/ContextMenu.vue";
 import DesktopContextMenu from "./DesktopContextMenu.vue";
-export default {
-  name: "Desktop",
-  components: {
-    Program,
-    DesktopContextMenu,
-    Window,
-    Notepad,
-    Folder,
-    Internet,
-  },
-  props: {
-    programs: Object,
-    programsOpen: Object,
-    savedFiles: Object,
-  },
-  data() {
-    return {
-      desktopContextMenuActive: false,
-      desktopVolumeMenuActive: false,
-      desktopContextMenuPosition: [0, 0],
-    };
-  },
-  methods: {
-    openProgram(fileName, fileIcon, fileType, files) {
-      this.$emit("openProgram", fileName, fileIcon, fileType, files);
-    },
-    closeProgram(fileName) {
-      this.$emit("closeProgram", fileName);
-    },
-    minimizeWindow(fileName) {
-      this.$emit("minimizeWindow", fileName);
-    },
-    resetDesktopContextMenu() {
-      this.$emit("resetDesktopContext");
-      this.desktopContextMenuActive = false;
-      this.desktopVolumeMenuActive = false;
-    },
-    desktopContextMenu(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.$emit("resetDesktopContext");
-      this.desktopContextMenuPosition[0] =
-        e.pageX - this.$refs.desktop.getBoundingClientRect().left;
-      this.desktopContextMenuPosition[1] =
-        e.pageY - this.$refs.desktop.getBoundingClientRect().top;
-      this.desktopContextMenuActive = true;
-    },
-  },
-};
+import { useDirectoryStore } from "../../stores/directory";
+import { useInterfaceStore } from "../../stores/interface";
+
+const directoryStore = useDirectoryStore();
+const interfaceStore = useInterfaceStore();
+const activeDirectory = directoryStore.activeDirectory;
+const openPrograms = directoryStore.openPrograms;
+let desktop = ref(null);
+
+function toggleFullscreenMode() {
+  interfaceStore.fullscreenMode = !interfaceStore.fullscreenMode;
+}
+
+function toggleCrtMode() {
+  interfaceStore.crtMode = !interfaceStore.crtMode;
+}
+
+function newFolder() {
+  directoryStore.activeDirectory.push(["Folder", "Folder", "Folder", false]);
+}
+
+function newTextDocument() {
+  directoryStore.activeDirectory.push(["Notepad", "Notepad", "Notepad", false]);
+}
+
+function resetDesktopContextMenu() {
+  interfaceStore.programContextMenuActive = false;
+  interfaceStore.desktopStartMenuActive = false;
+  interfaceStore.desktopContextMenuActive = false;
+}
+
+function programContextMenu(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  resetDesktopContextMenu();
+  interfaceStore.desktopContextMenuPosition[0] =
+    e.pageX - desktop.value.getBoundingClientRect().left;
+  interfaceStore.desktopContextMenuPosition[1] =
+    e.pageY - desktop.value.getBoundingClientRect().top;
+  interfaceStore.programContextMenuActive = true;
+}
+function desktopContextMenu(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  resetDesktopContextMenu();
+  interfaceStore.desktopContextMenuPosition[0] =
+    e.pageX - desktop.value.getBoundingClientRect().left;
+  interfaceStore.desktopContextMenuPosition[1] =
+    e.pageY - desktop.value.getBoundingClientRect().top;
+  interfaceStore.desktopContextMenuActive = true;
+}
 </script>
 <style lang="scss" scoped>
 .desktop {
@@ -104,6 +110,9 @@ export default {
   height: 452px;
   padding: 0;
   position: relative;
+  /*background: url("../src/assets/img/wallpaper/clouds.png");*/
+  background-repeat: no-repeat;
+  background-size: cover;
   background-color: #008080;
   .programs {
     height: 100%;

@@ -24,60 +24,37 @@
         :fileIcon="file[1]"
         :fileType="file[2]"
         :files="file[3]"
-        :programsOpen="programsOpen"
-        @openProgram="openProgram"
       />
     </div>
     <div class="details-bar">
       <div>
-        {{ this.currentDirectory ? this.currentDirectory.length : "0" }}
+        {{ currentDirectory ? currentDirectory.length : "0" }}
         object(s)
       </div>
     </div>
   </div>
 </template>
-<script>
+<script setup>
+import { onMounted,computed  } from "vue";
 import Program from "../desktop/programs/Program.vue";
-export default {
-  name: "Folder",
-  components: {
-    Program,
-  },
-  data() {
-    return {
-      currentDirectory: [],
-    };
-  },
-  props: {
-    fileName: String,
-    fileIcon: String,
-    fileType: String,
-    files: Array,
-    programsOpen: Array,
-  },
-  created() {
-    this.loadDirectory(this.programsOpen, this.fileName);
-  },
-  methods: {
-    loadDirectory(searchDirectory, fileSearch) {
-      let filteredResult = searchDirectory
-        .filter((row) => row[0] === fileSearch)
-        .map((row) => row);
-      this.currentDirectory = filteredResult[0][4];
-    },
-    openProgram(fileName, fileIcon, fileType, files) {
-      this.$emit("openProgram", fileName, fileIcon, fileType, files);
-      /*  if (fileType === "Folder") {
-        let filteredResult = this.currentDirectory
-          .filter((row) => row[0] === fileName)
-          .map((row) => row);
-        this.currentDirectory = filteredResult[0][4];
-      } else {
-        this.$emit("openProgram", fileName, fileIcon, fileType, files);
-      }*/
-    },
-  },
-};
+import { useDirectoryStore } from "../../stores/directory";
+
+let currentDirectory = computed(() => loadDirectory(directoryStore.openPrograms, props.fileName));
+
+const directoryStore = useDirectoryStore();
+const props = defineProps([
+  "fileName",
+  "fileIcon",
+  "fileType",
+  "files",
+]);
+
+function loadDirectory(searchDirectory, fileSearch) {
+  let filteredResult = searchDirectory
+    .filter((row) => row[0] === fileSearch)
+    .map((row) => row);
+  return filteredResult[0][4];
+}
 </script>
 <style lang="scss" scoped>
 .folder {

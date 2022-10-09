@@ -1,15 +1,9 @@
+<script setup>
+import Main from "./components/Main.vue";
+</script>
 <template>
   <Main />
 </template>
-<script>
-import Main from "./components/Main.vue";
-export default {
-  name: "App",
-  components: {
-    Main,
-  },
-};
-</script>
 <style>
 * {
   box-sizing: border-box;
@@ -44,7 +38,7 @@ body {
   font-weight: 300;
   font-size: 12px;
   overflow: hidden;
-  background-image: url("~@/assets/img/crt.png");
+  background-image: url("@/assets/img/crt.png");
   background-size: 1030px 914px;
   background-repeat: no-repeat;
   background-position: center;

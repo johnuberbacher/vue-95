@@ -11,32 +11,40 @@
     </div>
     <div class="paint-wrapper">
       <div class="toolbar">
+        <div class="item">
+          <img src="../../assets/icon/erase.png" />
+        </div>
+        <div class="item"><img src="../../assets/icon/fill.png" /></div>
         <div
-          v-for:="(stroke, index) in 6"
-          v-bind:key="index"
-          v-on:click="this.setStroke($event, index)"
-          :class="{ active: index + 1 === selectedStroke }"
-          class="stroke-selector"
+          class="item"
+          :class="{ active: 'pencil' === selectedTool }"
+          v-on:click="this.setToolBrush('pencil')"
         >
-          <div class="stroke">
-            <span
+          <img src="../../assets/icon/pencil.png" />
+        </div>
+        <div
+          class="item"
+          v-on:click="this.setToolBrush('brush')"
+        >
+          <img src="../../assets/icon/brush.png" />
+        </div>
+        <div class="item"><img src="../../assets/icon/text.png" /></div>
+        <div class="item"><img src="../../assets/icon/rectangle.png" /></div>
+        <div class="strokes" v-if="selectedTool === 'brush'">
+          <div
+            v-for:="(stroke, index) in 5"
+            v-bind:key="index"
+            v-on:click="this.setStroke($event, index)"
+            :class="{ active: index + 1 === selectedStroke }"
+            class="item"
+          >
+            <div
               v-bind:key="index"
               v-bind:style="{
-                height: index + 5 + 'px',
-                width: index + 5 + 'px',
-                minHeight: index + 5 + 'px',
-                minWidth: index + 5 + 'px',
+                height: index + 1 + 'px',
+                minHeight: index + 1 + 'px',
               }"
-            ></span>
-          </div>
-        </div>
-        <div class="stroke-selector">
-          <div class="stroke">
-            <img
-              width="9"
-              height="9"
-              :src="require('@/assets/icon/close.png')"
-            />
+            ></div>
           </div>
         </div>
       </div>
@@ -88,6 +96,7 @@ export default {
       currX: 0,
       currY: 0,
       canvas: "",
+      selectedTool: "pencil",
       selectedStroke: 1,
       selectedLeftColor: "000000",
       selectedRightColor: "FFFFFF",
@@ -127,6 +136,14 @@ export default {
     this.canvas = this.$refs.canvas.getContext("2d");
   },
   methods: {
+    setToolPencil(type) {
+      this.selectedStroke = 1;
+      this.selectedTool = type;
+    },
+    setToolBrush(type) {
+      this.selectedStroke = 1;
+      this.selectedTool = type;
+    },
     setStroke(e, index) {
       this.selectedStroke = index + 1;
     },
@@ -198,7 +215,7 @@ export default {
       height: 18px;
       position: relative;
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 4px;
         left: 4px;
@@ -211,16 +228,16 @@ export default {
         background-color: $highlightV95;
         color: white;
         &:after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: 4px;
           left: 4px;
           width: 6px;
           height: 1px;
-          background: #FFFFFF;
+          background: #ffffff;
         }
         > .submenu {
-          display: block
+          display: block;
         }
       }
       .submenu {
@@ -254,31 +271,82 @@ export default {
     }
   }
   .toolbar {
-    @include v95Hover;
     overflow: hidden;
-    width: 48px;
-    padding: 2px 2px 0px 2px;
-    .stroke-selector {
-      @include v95;
-      height: 24px;
-      width: 24px;
-      margin-top: 1px;
-      margin-bottom: 5px;
-      .stroke {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        span {
-          display: block;
-          border-radius: 100px;
-          background-color: black;
+    width: 100%;
+    min-width: 49px;
+    max-width: 49px;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 24px);
+    grid-gap: 1px;
+    justify-content: start;
+    align-content: start;
+    .strokes {
+      margin-top: 4px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgb(10, 10, 10) rgb(254, 254, 254) rgb(254, 254, 254)
+        rgb(10, 10, 10);
+      box-shadow: rgb(223 223 223) 1px 1px 0px 0px inset;
+      min-width: 48px;
+      padding: 2px;
+      .item {
+        border-width: 0px;
+        background: transparent;
+        box-shadow: none;
+        padding: 0 4px;
+        width: auto;
+        height: 16px;
+        border-radius: 0;
+        > div {
+          width: 100%;
+          background: black;
+        }
+        &.active,
+        &:active,
+        &:focus {
+          border-width: 0px;
+          background: $highlightV95;
+          box-shadow: none;
+          > div {
+            width: 100%;
+            background: white;
+          }
         }
       }
+    }
+    .item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      outline: none;
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      padding: 0;
+      box-shadow: 1px 1px black, inset -1px -1px grey, inset 1px 1px white;
+      &:focus,
       &:active,
       &.active {
-        @include v95Hover;
+        box-shadow: inset 1px 1px rgba(black, 1), inset 2px 2px rgba(grey, 1),
+          1px 1px rgba(white, 1);
+
+        background-image: repeating-linear-gradient(
+          to left bottom,
+          rgba(white, 0.8),
+          rgba(white, 0.8) 0.25px,
+          rgba(grey, 0.1) 0.25px,
+          rgba(grey, 0.1) 0.5px
+        );
+      }
+      &.stroke {
+        grid-column: 1 / span 2;
+        width: 48px;
+        background-color: black;
       }
     }
   }
