@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 
 export const useInterfaceStore = defineStore("interface", {
   state: () => ({
-    fullscreenMode: false,
+    fullscreenMode: true,
     crtMode: true,
     programContextMenuActive: false, 
     desktopContextMenuActive: false, 
